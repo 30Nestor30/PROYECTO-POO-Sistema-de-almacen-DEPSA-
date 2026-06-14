@@ -3,9 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Dell/Documents/TECN.PROG.POO/PROYECTO-POO-Sistema-de-almacen-DEPSA-/src/Cliente.java</file>
-            <file>file:/C:/Users/Dell/Documents/TECN.PROG.POO/PROYECTO-POO-Sistema-de-almacen-DEPSA-/src/Producto.java</file>
-            <file>file:/C:/Users/Dell/Documents/TECN.PROG.POO/PROYECTO-POO-Sistema-de-almacen-DEPSA-/src/Sistema_almacen_DEPSA.java</file>
+            <file>file:/C:/Users/NESTOR/Documents/TRABAJOS%20UPN/PROYECTO%20POO%205°%20CICLO/Sistema_almacen_DEPSA/src/sistema_almacen_depsa/Sistema_almacen_DEPSA.java</file>
+            <file>file:/C:/Users/NESTOR/Documents/TRABAJOS%20UPN/PROYECTO%20POO%205°%20CICLO/Sistema_almacen_DEPSA/src/sistema_almacen_depsa/Persona.java</file>
+            <file>file:/C:/Users/NESTOR/Documents/TRABAJOS%20UPN/PROYECTO%20POO%205°%20CICLO/Sistema_almacen_DEPSA/src/sistema_almacen_depsa/Cliente.java</file>
+            <file>file:/C:/Users/NESTOR/Documents/TRABAJOS%20UPN/PROYECTO%20POO%205°%20CICLO/Sistema_almacen_DEPSA/src/sistema_almacen_depsa/Producto.java</file>
+            <file>file:/C:/Users/NESTOR/Documents/TRABAJOS%20UPN/PROYECTO%20POO%205°%20CICLO/Sistema_almacen_DEPSA/src/sistema_almacen_depsa/Vendedor.java</file>
+            <file>file:/C:/Users/NESTOR/Documents/TRABAJOS%20UPN/PROYECTO%20POO%205°%20CICLO/Sistema_almacen_DEPSA/src/sistema_almacen_depsa/Pedido.java</file>
+            <file>file:/C:/Users/NESTOR/Documents/TRABAJOS%20UPN/PROYECTO%20POO%205°%20CICLO/Sistema_almacen_DEPSA/src/sistema_almacen_depsa/DetallePedido.java</file>
+            <file>file:/C:/Users/NESTOR/Documents/TRABAJOS%20UPN/PROYECTO%20POO%205°%20CICLO/Sistema_almacen_DEPSA/src/sistema_almacen_depsa/VentanaPrincipal.java</file>
+            <file>file:/C:/Users/NESTOR/Documents/TRABAJOS%20UPN/PROYECTO%20POO%205°%20CICLO/Sistema_almacen_DEPSA/src/sistema_almacen_depsa/PanelProductos.java</file>
+            <file>file:/C:/Users/NESTOR/Documents/TRABAJOS%20UPN/PROYECTO%20POO%205°%20CICLO/Sistema_almacen_DEPSA/src/sistema_almacen_depsa/PanelClientes.java</file>
         </group>
     </open-files>
 </project-private>
