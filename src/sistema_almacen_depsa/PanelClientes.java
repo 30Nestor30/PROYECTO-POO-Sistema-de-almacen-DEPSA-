@@ -6,7 +6,7 @@ package sistema_almacen_depsa;
 
 /**
  *
- * @author NESTOR
+ * @author NESTOR 
  */
 public class PanelClientes extends javax.swing.JPanel {
 
