@@ -19,7 +19,7 @@ public class PanelClientes extends javax.swing.JPanel {
     {
         initComponents();
         // === CONFIGURACIÓN DE LA TABLA CLIENTES ===
-// === CONFIGURACIÓN DE LA TABLA CLIENTES ===
+        // === CONFIGURACIÓN DE LA TABLA CLIENTES ===
         javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel();
 
         modelo.addColumn("Tipo Doc.");
@@ -59,7 +59,7 @@ public class PanelClientes extends javax.swing.JPanel {
         txtTelefono = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaClientes = new javax.swing.JTable();
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel1.setText("GESTION DE CLIENTES");
@@ -90,7 +90,7 @@ public class PanelClientes extends javax.swing.JPanel {
         jButton1.setText("GUARDAR CLIENTE");
         jButton1.addActionListener(this::jButton1ActionPerformed);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -101,7 +101,7 @@ public class PanelClientes extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tablaClientes);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -252,7 +252,7 @@ if ( txtTipoDoc.getText().isEmpty() || txtDocumento.getText().isEmpty() || txtNo
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tablaClientes;
     private javax.swing.JTextField txtApeMaterno;
     private javax.swing.JTextField txtApePaterno;
     private javax.swing.JTextField txtDireccion;
