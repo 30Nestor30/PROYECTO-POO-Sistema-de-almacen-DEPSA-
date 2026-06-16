@@ -271,13 +271,25 @@ public class PanelClientes extends javax.swing.JPanel {
         javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tablaClientes.getModel();
         modelo.addRow(new Object[]{tipoDoc, documento, nombres, apePaterno, apeMaterno, direccion, telefono});
 
+      // ==============================================================================
+      // INTEGRACIÓN REQ-013: Registro de éxito en la bitácora
+      // ¿Qué hace?: Llama a la herramienta del Log para anotar de forma oculta en el 
+      //             bloc de notas que este vendedor logró guardar un cliente.
+      //
+      // ¿Por qué usamos la variable 'documento' en vez de 'txtDocumento.getText()'?
+      // Porque 'documento' toma el dato seguro que ya está guardado en la memoria de la 
+      // computadora, evitando el riesgo de leer la caja visual por si esta se borra o 
+      // se queda vacía durante el proceso.
+      // ==============================================================================
+        GestorArchivos.registrarLog("REGISTRO", "Se guardó el cliente con DNI: " + documento);
+        
         // 6. Limpiamos las cajas (dejándolas vacías) para el siguiente cliente
         txtTipoDoc.setText("");
         txtDocumento.setText("");
         txtNombres.setText("");
         txtApePaterno.setText("");
         txtApeMaterno.setText("");
-        txtDireccion.setText("");
+        txtDireccion.setText(""); 
         txtTelefono.setText("");    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
