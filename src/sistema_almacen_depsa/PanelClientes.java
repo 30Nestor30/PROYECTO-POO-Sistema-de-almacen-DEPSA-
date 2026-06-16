@@ -340,7 +340,8 @@ public class PanelClientes extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // 1. Averiguamos qué fila de la tabla seleccionó el usuario (empiezan a contar desde 0)
+       
+// 1. Averiguamos qué fila de la tabla seleccionó el usuario (empiezan a contar desde 0)
         int filaSeleccionada = tablaClientes.getSelectedRow();
         // ¿Qué hace?: Le pregunta automáticamente a la tabla en qué fila se hizo clic.
         // ¿Qué devuelve?: Devuelve el número de la POSICIÓN elegida (no la cantidad).
@@ -348,12 +349,40 @@ public class PanelClientes extends javax.swing.JPanel {
         //   -> Si el usuario presiona el botón sin seleccionar nada, devuelve -1.
 
         // 2. Si es mayor o igual a 0, significa que sí seleccionó una fila válida
-        if (filaSeleccionada >= 0) {
-            // Llamamos al modelo de la tabla y borramos esa fila específica
-            javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tablaClientes.getModel();
-            modelo.removeRow(filaSeleccionada);
-        } else {
-            // Si es -1, significa que no seleccionó nada. Le avisamos.
+        if (filaSeleccionada >= 0) 
+        {
+            
+            // 3. Extraemos el DNI de la tabla ANTES de borrarlo (está en la columna 1)
+            // Lo necesitamos para mostrarlo en el mensaje y guardarlo en la caja negra.
+            String dniEliminado = tablaClientes.getValueAt(filaSeleccionada, 1).toString();
+            
+            // 4. REQ-015: Confirmación de seguridad
+            // Bloquea borrados accidentales preguntando "Sí" o "No"
+            int respuesta = JOptionPane.showConfirmDialog(null, 
+                    "¿Está seguro de eliminar permanentemente al cliente con DNI " + dniEliminado + "?", 
+                    "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
+            
+            // Si el usuario presionó "Sí" (YES_OPTION)
+            if (respuesta == JOptionPane.YES_OPTION) {
+                // Llamamos al modelo de la tabla y borramos esa fila específica de la pantalla
+                javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tablaClientes.getModel();
+                modelo.removeRow(filaSeleccionada);
+                
+                // ==============================================================================
+                // REQ-GA: INTEGRACIÓN CON GESTORES DE ARCHIVOS
+                // 1. Reescribimos el bloc de notas para que ya no incluya a este cliente.
+                // 2. Dejamos el rastro en el Log.
+                // ==============================================================================
+                GestorArchivos.guardarClientes(tablaClientes);
+                GestorArchivos.registrarLog("ELIMINACIÓN", "Se eliminó al cliente con DNI: " + dniEliminado);
+                
+                JOptionPane.showMessageDialog(null, "Cliente eliminado correctamente.");
+            }
+            
+        } 
+        else 
+        {
+            // Si es -1, significa que no seleccionó nada. Le avisamos (Freno).
             JOptionPane.showMessageDialog(null, "Por favor, seleccione un cliente de la tabla para eliminar.");
         }
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -362,21 +391,61 @@ public class PanelClientes extends javax.swing.JPanel {
         // 1. Averiguamos qué fila quiere editar el usuario
         int filaSeleccionada = tablaClientes.getSelectedRow();
 
-       // 2. Si seleccionó una fila válida (posición 0, 1, 2, etc.)
+        // 2. Si seleccionó una fila válida (posición 0, 1, 2, etc.)
         if (filaSeleccionada >= 0) {
+            
+            // --- INICIO DE VALIDACIONES (Frenos de seguridad) ---
+            String tipoDoc = txtTipoDoc.getText();
+            String documento = txtDocumento.getText();
+            String nombres = txtNombres.getText();
+            String apePaterno = txtApePaterno.getText();
+            String apeMaterno = txtApeMaterno.getText();
+            String direccion = txtDireccion.getText();
+            String telefono = txtTelefono.getText();
+
+            // Freno 1: Ningún campo vacío
+            if (tipoDoc.isEmpty() || documento.isEmpty() || nombres.isEmpty()
+                    || apePaterno.isEmpty() || apeMaterno.isEmpty() || direccion.isEmpty()|| telefono.isEmpty())
+            {
+                JOptionPane.showMessageDialog(null, "Error: Ningún campo puede quedar vacío al actualizar.");
+                return; 
+            }
+
+            // Freno 2: Teléfono válido (9 números exactos)
+            if (telefono.length() != 9) {
+                JOptionPane.showMessageDialog(null, "Error: El teléfono debe tener exactamente 9 números.");
+                return; 
+            }
+            try 
+            {
+                Long.parseLong(telefono);
+            }
+            catch (NumberFormatException e)
+            {
+                JOptionPane.showMessageDialog(null, "Error: El teléfono no puede contener letras.");
+                return; 
+            }
+            // --- FIN DE VALIDACIONES ---
 
             // Obtenemos el modelo de la tabla
             javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tablaClientes.getModel();
 
-            // 3. Sobreescribimos celda por celda usando lo que hay en las cajas de texto
+            // 3. Sobreescribimos celda por celda usando las variables que ya validamos
             // setValueAt( El nuevo texto , en qué fila , en qué columna )
-            modelo.setValueAt(txtTipoDoc.getText(), filaSeleccionada, 0); // Columna 0 = Tipo Doc
-            modelo.setValueAt(txtDocumento.getText(), filaSeleccionada, 1); // Columna 1 = Documento
-            modelo.setValueAt(txtNombres.getText(), filaSeleccionada, 2); // Columna 2 = Nombres
-            modelo.setValueAt(txtApePaterno.getText(), filaSeleccionada, 3); // Columna 3 = Apellido Pat
-            modelo.setValueAt(txtApeMaterno.getText(), filaSeleccionada, 4); // Columna 4 = Apellido Mat
-            modelo.setValueAt(txtDireccion.getText(), filaSeleccionada, 5); // Columna 5 = Dirección
-            modelo.setValueAt(txtTelefono.getText(), filaSeleccionada, 6); // Columna 6 = Teléfono
+            modelo.setValueAt(tipoDoc, filaSeleccionada, 0); 
+            modelo.setValueAt(documento, filaSeleccionada, 1); 
+            modelo.setValueAt(nombres, filaSeleccionada, 2); 
+            modelo.setValueAt(apePaterno, filaSeleccionada, 3); 
+            modelo.setValueAt(apeMaterno, filaSeleccionada, 4); 
+            modelo.setValueAt(direccion, filaSeleccionada, 5); 
+            modelo.setValueAt(telefono, filaSeleccionada, 6); 
+
+            // ==============================================================================
+            // REQ-GA: INTEGRACIÓN CON GESTORES DE ARCHIVOS
+            // Actualizamos el bloc de notas con los datos editados y anotamos en el log.
+            // ==============================================================================
+            GestorArchivos.guardarClientes(tablaClientes);
+            GestorArchivos.registrarLog("ACTUALIZACIÓN", "Se editaron los datos del cliente con DNI/CE: " + documento);
 
             JOptionPane.showMessageDialog(null, "Cliente actualizado correctamente.");
 
@@ -386,6 +455,9 @@ public class PanelClientes extends javax.swing.JPanel {
             // Si la posición es -1, mostramos error
             JOptionPane.showMessageDialog(null, "Por favor, seleccione un cliente de la tabla para editar.");
         }
+        // ¿Qué hace JOptionPane?: Llama a una ventana emergente (pop-up) visual.
+        // ¿Para qué sirve aquí?: Para lanzarle un cuadro de alerta en medio de la pantalla al usuario si comete un error 
+        //(como no seleccionar a nadie)
     }//GEN-LAST:event_jButton2ActionPerformed
 
 
