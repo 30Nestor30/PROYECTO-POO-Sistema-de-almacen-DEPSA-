@@ -274,10 +274,12 @@ public class PanelClientes extends javax.swing.JPanel {
         // ==============================================================================
         javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tablaClientes.getModel();
         
-        for (int i = 0; i < modelo.getRowCount(); i++) {
+        for (int i = 0; i < modelo.getRowCount(); i++)
+        {
             String docExistente = modelo.getValueAt(i, 1).toString();
             
-            if (docExistente.equals(documento)) {
+            if (docExistente.equals(documento)) 
+            {
                 JOptionPane.showMessageDialog(null, "Error: El DNI/CE " + documento + " ya está registrado en el sistema.");
                 GestorArchivos.registrarLog("ERROR DUPLICADO", "Intento de registro doble con DNI: " + documento);
                 return; // Freno 4: Cancela el guardado
