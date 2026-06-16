@@ -62,6 +62,8 @@ public class PanelClientes extends javax.swing.JPanel {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        txtBuscar = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(204, 204, 204));
         setForeground(new java.awt.Color(204, 204, 204));
@@ -121,15 +123,23 @@ public class PanelClientes extends javax.swing.JPanel {
         jButton4.setText("LIMPIAR");
         jButton4.addActionListener(this::jButton4ActionPerformed);
 
+        jLabel9.setText("Buscar Cliente (Nombre o Documento):");
+
+        txtBuscar.addActionListener(this::txtBuscarActionPerformed);
+        txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtBuscarKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(338, 338, 338)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 434, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(338, 338, 338)
                         .addComponent(jButton2)
                         .addGap(58, 58, 58)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -155,7 +165,14 @@ public class PanelClientes extends javax.swing.JPanel {
                                 .addGap(9, 9, 9)
                                 .addComponent(jButton3)
                                 .addGap(282, 282, 282)
-                                .addComponent(jButton4)))))
+                                .addComponent(jButton4))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addComponent(jLabel9)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 434, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -171,8 +188,12 @@ public class PanelClientes extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addComponent(jLabel1)
-                .addGap(41, 41, 41)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel9)
+                        .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtTipoDoc))
@@ -460,6 +481,40 @@ public class PanelClientes extends javax.swing.JPanel {
         //(como no seleccionar a nadie)
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBuscarActionPerformed
+
+    private void txtBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyReleased
+       // ==============================================================================
+        // REQ-018: Buscar cliente (Filtro en tiempo real)
+        // ==============================================================================
+        
+        // 1. Capturamos lo que el usuario va escribiendo tecla a tecla
+        String textoBusqueda = txtBuscar.getText(); 
+
+        // 2. Extraemos el modelo de tu tabla actual
+        javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tablaClientes.getModel();
+
+        // 3. Creamos la herramienta especial de Java para filtrar tablas (TableRowSorter)
+        javax.swing.table.TableRowSorter<javax.swing.table.DefaultTableModel> filtro = new javax.swing.table.TableRowSorter<>(modelo);
+        tablaClientes.setRowSorter(filtro);
+
+        // 4. Lógica del filtro dinámico
+        if (textoBusqueda.trim().isEmpty()) {
+            // Si el usuario borra todo, quitamos el filtro y mostramos toda la tabla
+            filtro.setRowFilter(null);
+        } 
+        else 
+        {
+        //  "(?i)": Truco que ignora mayúsculas y minúsculas (ej. encuentra "Juan" aunque el usuario escriba "juan" o "JUAN").
+        // REGLAS DEL FILTRO DE BÚSQUEDA:
+        // - ¿Dónde busca?: Solo en las posiciones 1, 2, 3 y 4 (N° Doc, Nombre, Ap. Pat, Ap. Mat).
+        // - ¿Cómo busca?: Sin jerarquías. Si lo que escribimos coincide con al menos UNA de estas 4 columnas, muestra al cliente.
+            filtro.setRowFilter(javax.swing.RowFilter.regexFilter("(?i)" + textoBusqueda, 1, 2, 3, 4));
+        }
+    }//GEN-LAST:event_txtBuscarKeyReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -474,10 +529,12 @@ public class PanelClientes extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaClientes;
     private javax.swing.JTextField txtApeMaterno;
     private javax.swing.JTextField txtApePaterno;
+    private javax.swing.JTextField txtBuscar;
     private javax.swing.JTextField txtDireccion;
     private javax.swing.JTextField txtDocumento;
     private javax.swing.JTextField txtNombres;
