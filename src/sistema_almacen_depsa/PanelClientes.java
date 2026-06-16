@@ -64,6 +64,7 @@ public class PanelClientes extends javax.swing.JPanel {
         jButton4 = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         txtBuscar = new javax.swing.JTextField();
+        jButton5 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(204, 204, 204));
         setForeground(new java.awt.Color(204, 204, 204));
@@ -132,6 +133,10 @@ public class PanelClientes extends javax.swing.JPanel {
             }
         });
 
+        jButton5.setFont(new java.awt.Font("Sitka Text", 1, 18)); // NOI18N
+        jButton5.setText("Exportar a Excel");
+        jButton5.addActionListener(this::jButton5ActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -139,9 +144,14 @@ public class PanelClientes extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(338, 338, 338)
-                        .addComponent(jButton2)
-                        .addGap(58, 58, 58)
+                        .addGap(17, 17, 17)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton2)
+                                .addGap(58, 58, 58))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(236, 236, 236)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -220,8 +230,9 @@ public class PanelClientes extends javax.swing.JPanel {
                 .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8))
-                .addGap(28, 28, 28)
+                    .addComponent(jLabel8)
+                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2)
@@ -347,7 +358,7 @@ public class PanelClientes extends javax.swing.JPanel {
         txtTelefono.setText("");    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // Vaciamos todas las cajas de texto
+       // Vaciamos todas las cajas de texto
         txtTipoDoc.setText("");
         txtDocumento.setText("");
         txtNombres.setText("");
@@ -356,7 +367,11 @@ public class PanelClientes extends javax.swing.JPanel {
         txtDireccion.setText("");
         txtTelefono.setText("");
 
-// Un toque profesional: Mandamos el cursor de vuelta a la primera caja
+        // MEJORAS DE EXPERIENCIA DE USUARIO (UX):
+        // 1. Quitamos la selección azul de la tabla (por si había un cliente seleccionado)
+        tablaClientes.clearSelection();
+        
+        // 2. Mandamos el cursor parpadeante de vuelta a la primera caja para escribir rápido
         txtTipoDoc.requestFocus();
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -515,12 +530,105 @@ public class PanelClientes extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_txtBuscarKeyReleased
 
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // ==============================================================================
+        // REQ-039: Exportar tabla a Excel
+        // ==============================================================================
+        
+        // Intentamos ejecutar el bloque. Si algo sale mal (ej. falta de memoria), 
+        // salta al 'catch' de abajo para evitar que el programa colapse de golpe.
+        try {
+            
+            // --- PASO 1: LA VENTANA DE GUARDADO ---
+            
+            // 1. Creamos la típica ventanita de Windows para elegir dónde guardar un archivo.
+            javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+            
+            // 2. Le ponemos un título a esa ventanita en la parte superior.
+            fileChooser.setDialogTitle("Guardar como Excel");
+            
+            // 3. Filtro: Obligamos a que la ventana solo permita archivos de Excel (.xlsx).
+            fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Archivos Excel (*.xlsx)", "xlsx"));
+            
+            // 4. Mostramos la ventana. Si el usuario hace clic en "Guardar" (APPROVE_OPTION), entra al 'if'.
+            if (fileChooser.showSaveDialog(this) == javax.swing.JFileChooser.APPROVE_OPTION) {
+                
+                // 5. Capturamos la ruta del disco duro y el nombre que el usuario eligió.
+                java.io.File archivo = fileChooser.getSelectedFile();
+                
+                // 6. Seguridad: Si al usuario se le olvidó escribir la extensión ".xlsx" al final del nombre, 
+                // el sistema se la agrega automáticamente para que el archivo no se corrompa.
+                if (!archivo.getName().endsWith(".xlsx")) {
+                    archivo = new java.io.File(archivo.getAbsolutePath() + ".xlsx");
+                }
+                
+                // --- PASO 2: CREACIÓN DEL EXCEL VIRTUAL ---
+                
+                // 7. Creamos un "Libro" de Excel nuevo y en blanco en la memoria de Java.
+                org.apache.poi.xssf.usermodel.XSSFWorkbook workbook = new org.apache.poi.xssf.usermodel.XSSFWorkbook();
+                
+                // 8. Dentro de ese libro, creamos una "Hoja" y la nombramos "Clientes".
+                org.apache.poi.ss.usermodel.Sheet hoja = workbook.createSheet("Clientes");
+                
+                // 9. Creamos la primera fila del Excel (la fila 0). Aquí irán los encabezados.
+                org.apache.poi.ss.usermodel.Row filaCabeceras = hoja.createRow(0);
+                
+                // --- PASO 3: DIBUJAR LOS TÍTULOS DE LA TABLA ---
+                
+                // 10. Bucle para los títulos: Recorre y cuenta cuántas columnas tiene tu tabla de Java.
+                for (int i = 0; i < tablaClientes.getColumnCount(); i++) {
+                    // Por cada columna que encuentra, crea una celda en el Excel y le pone el título (DNI, Nombre, etc).
+                    filaCabeceras.createCell(i).setCellValue(tablaClientes.getColumnName(i));
+                }
+                
+                // --- PASO 4: PASAR LA INFORMACIÓN DE LOS CLIENTES ---
+                
+                // 11. Bucle principal (Filas): Recorre a los clientes uno por uno en tu tabla de Java.
+                for (int f = 0; f < tablaClientes.getRowCount(); f++) {
+                    // Crea una fila en Excel por cada cliente. Ponemos "f + 1" para no borrar los títulos de la fila 0.
+                    org.apache.poi.ss.usermodel.Row filaDatos = hoja.createRow(f + 1);
+                    
+                    // 12. Bucle secundario (Columnas): Recorre los datos de ese cliente específico (su DNI, luego su nombre, etc).
+                    for (int c = 0; c < tablaClientes.getColumnCount(); c++) {
+                        // Extraemos el dato exacto de la tabla de Java.
+                        Object valor = tablaClientes.getValueAt(f, c);
+                        
+                        // Si la celda de Java no está vacía, copiamos su valor a la celda del Excel.
+                        if (valor != null) {
+                            filaDatos.createCell(c).setCellValue(valor.toString());
+                        }
+                    }
+                }
+                
+                // --- PASO 5: FABRICAR EL ARCHIVO FÍSICO ---
+                
+                // 13. Preparamos el "tubo" de salida de datos desde Java hacia tu disco duro.
+                java.io.FileOutputStream salida = new java.io.FileOutputStream(archivo);
+                
+                // 14. Escribimos toda la información del libro virtual hacia el archivo físico.
+                workbook.write(salida);
+                
+                // 15. Cerramos los procesos. Esto es OBLIGATORIO para no dejar el archivo bloqueado ni consumir memoria RAM.
+                salida.close();
+                workbook.close();
+                
+                // 16. Lanzamos el mensaje final de éxito al usuario.
+                javax.swing.JOptionPane.showMessageDialog(this, "¡Archivo Excel generado correctamente!");
+            }
+            
+        } catch (Exception e) {
+            // Si hubo algún error (ej. el archivo estaba abierto en otra ventana), lo atrapamos y mostramos qué falló.
+            javax.swing.JOptionPane.showMessageDialog(this, "Error al exportar: " + e.getMessage());
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

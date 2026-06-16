@@ -8,3 +8,7 @@
 [16/06/2026 09:07:10] REGISTRO - Se guardó el cliente con DNI: 74988880
 [16/06/2026 09:07:35] SISTEMA - Se actualizó el archivo clientes.txt
 [16/06/2026 09:07:35] REGISTRO - Se guardó el cliente con DNI: 123456789
+[16/06/2026 15:25:49] SISTEMA - Se actualizó el archivo clientes.txt
+[16/06/2026 15:25:49] REGISTRO - Se guardó el cliente con DNI: 74988880
+[16/06/2026 15:29:00] SISTEMA - Se actualizó el archivo clientes.txt
+[16/06/2026 15:29:00] REGISTRO - Se guardó el cliente con DNI: 45623598
