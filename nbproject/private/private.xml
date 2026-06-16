@@ -5,12 +5,17 @@
         <group>
             <file>file:/C:/Users/NESTOR/Documents/TRABAJOS%20UPN/PROYECTO%20POO%205°%20CICLO/Sistema_almacen_DEPSA/src/sistema_almacen_depsa/NewMain.java</file>
             <file>file:/C:/Users/NESTOR/Documents/TRABAJOS%20UPN/PROYECTO%20POO%205°%20CICLO/Sistema_almacen_DEPSA/src/sistema_almacen_depsa/PanelClientes.java</file>
-            <file>file:/C:/Users/NESTOR/Documents/TRABAJOS%20UPN/PROYECTO%20POO%205°%20CICLO/Sistema_almacen_DEPSA/src/sistema_almacen_depsa/PanelProducto.java</file>
+            <file>file:/C:/Users/NESTOR/Documents/TRABAJOS%20UPN/PROYECTO%20POO%205°%20CICLO/Sistema_almacen_DEPSA/src/sistema_almacen_depsa/PanelProductos.java</file>
             <file>file:/C:/Users/NESTOR/Documents/TRABAJOS%20UPN/PROYECTO%20POO%205°%20CICLO/Sistema_almacen_DEPSA/src/sistema_almacen_depsa/VentanaPrincipal.java</file>
             <file>file:/C:/Users/NESTOR/Documents/TRABAJOS%20UPN/PROYECTO%20POO%205°%20CICLO/Sistema_almacen_DEPSA/src/sistema_almacen_depsa/Pedido.java</file>
             <file>file:/C:/Users/NESTOR/Documents/TRABAJOS%20UPN/PROYECTO%20POO%205°%20CICLO/Sistema_almacen_DEPSA/src/sistema_almacen_depsa/DetallePedido.java</file>
             <file>file:/C:/Users/NESTOR/Documents/TRABAJOS%20UPN/PROYECTO%20POO%205°%20CICLO/Sistema_almacen_DEPSA/src/sistema_almacen_depsa/Vendedor.java</file>
             <file>file:/C:/Users/NESTOR/Documents/TRABAJOS%20UPN/PROYECTO%20POO%205°%20CICLO/Sistema_almacen_DEPSA/src/sistema_almacen_depsa/Producto.java</file>
+            <file>file:/C:/Users/NESTOR/Documents/TRABAJOS%20UPN/PROYECTO%20POO%205°%20CICLO/Sistema_almacen_DEPSA/src/sistema_almacen_depsa/Persona.java</file>
+            <file>file:/C:/Users/NESTOR/Documents/TRABAJOS%20UPN/PROYECTO%20POO%205°%20CICLO/Sistema_almacen_DEPSA/src/sistema_almacen_depsa/Validaciones.java</file>
+            <file>file:/C:/Users/NESTOR/Documents/TRABAJOS%20UPN/PROYECTO%20POO%205°%20CICLO/Sistema_almacen_DEPSA/src/sistema_almacen_depsa/PanelPedidos.java</file>
+            <file>file:/C:/Users/NESTOR/Documents/TRABAJOS%20UPN/PROYECTO%20POO%205°%20CICLO/Sistema_almacen_DEPSA/src/sistema_almacen_depsa/PanelVendedores.java</file>
+            <file>file:/C:/Users/NESTOR/Documents/TRABAJOS%20UPN/PROYECTO%20POO%205°%20CICLO/Sistema_almacen_DEPSA/src/sistema_almacen_depsa/PanelInicio.java</file>
         </group>
     </open-files>
 </project-private>

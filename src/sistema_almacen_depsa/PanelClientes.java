@@ -8,23 +8,22 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author NESTOR 
+ * @author NESTOR
  */
 public class PanelClientes extends javax.swing.JPanel {
 
     /**
      * Creates new form PanelClientes
      */
-    public PanelClientes()
-    {
+    public PanelClientes() {
         initComponents();
         // === CONFIGURACIÓN DE LA TABLA CLIENTES ===
         // === CONFIGURACIÓN DE LA TABLA CLIENTES ===
         javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel();
 
-        modelo.addColumn("Tipo Doc.");
-        modelo.addColumn("Documento");
-        modelo.addColumn("Nombres");
+        modelo.addColumn("Tipo de Documento");
+        modelo.addColumn("N° Documento");
+        modelo.addColumn("Nombre(s)");
         modelo.addColumn("Ap. Paterno");
         modelo.addColumn("Ap. Materno");
         modelo.addColumn("Dirección");
@@ -60,6 +59,9 @@ public class PanelClientes extends javax.swing.JPanel {
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaClientes = new javax.swing.JTable();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(204, 204, 204));
         setForeground(new java.awt.Color(204, 204, 204));
@@ -96,57 +98,74 @@ public class PanelClientes extends javax.swing.JPanel {
 
         tablaClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Tipo de Documento", "Numero de Documento", "Nombre(s)", "Apellido Paterno", "Apellido Materno", "Dirección", "Telefono"
             }
         ));
         jScrollPane1.setViewportView(tablaClientes);
+
+        jButton2.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        jButton2.setText("EDITAR");
+        jButton2.addActionListener(this::jButton2ActionPerformed);
+
+        jButton3.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        jButton3.setText("ELIMINAR");
+        jButton3.addActionListener(this::jButton3ActionPerformed);
+
+        jButton4.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        jButton4.setText("LIMPIAR");
+        jButton4.addActionListener(this::jButton4ActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1407, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(455, 455, 455)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(338, 338, 338)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 434, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton2)
+                        .addGap(58, 58, 58)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(19, 19, 19)
-                                .addComponent(txtDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel7)
+                                    .addComponent(jLabel8)
+                                    .addComponent(jLabel2))
                                 .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtApePaterno, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtNombres, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtApeMaterno, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtApePaterno, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                                    .addComponent(txtApeMaterno)
+                                    .addComponent(txtDireccion)
+                                    .addComponent(txtTelefono)
+                                    .addComponent(txtDocumento)
+                                    .addComponent(txtNombres)
+                                    .addComponent(txtTipoDoc)))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(txtTipoDoc, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(133, 133, 133))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 434, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(86, 86, 86)))
+                                .addGap(9, 9, 9)
+                                .addComponent(jButton3)
+                                .addGap(282, 282, 282)
+                                .addComponent(jButton4)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addGap(612, 612, 612))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1407, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -182,10 +201,14 @@ public class PanelClientes extends javax.swing.JPanel {
                     .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
                 .addGap(28, 28, 28)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3)
+                    .addComponent(jButton4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(45, 45, 45))
+                .addGap(51, 51, 51))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -194,14 +217,7 @@ public class PanelClientes extends javax.swing.JPanel {
     }//GEN-LAST:event_txtDocumentoActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-if ( txtTipoDoc.getText().isEmpty() || txtDocumento.getText().isEmpty() || txtNombres.getText().isEmpty() ||
-        txtApePaterno.getText().isEmpty() || txtApeMaterno.getText().isEmpty() || txtDireccion.getText().isEmpty() ||
-        txtTelefono.getText().isEmpty())  
-         {
-          JOptionPane.showMessageDialog(null, "¡Atención! llena todas las cajas del formulario.");
-          return; // Este es el freno que detiene todo el proceso
-         }
-        // 1. Extraemos lo que el usuario escribió y lo guardamos en variables de texto locales
+        // 1. Extraemos lo que el usuario escribió (para poder analizarlo)
         String tipoDoc = txtTipoDoc.getText();
         String documento = txtDocumento.getText();
         String nombres = txtNombres.getText();
@@ -210,12 +226,62 @@ if ( txtTipoDoc.getText().isEmpty() || txtDocumento.getText().isEmpty() || txtNo
         String direccion = txtDireccion.getText();
         String telefono = txtTelefono.getText();
 
-        // 2. Inyectamos esos datos como una nueva fila en nuestra tabla
-        javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tablaClientes.getModel();
+        // 2. FILTRO BASE: Validamos que no haya ningún campo vacío
+        if (tipoDoc.isEmpty() || documento.isEmpty() || nombres.isEmpty()
+                || apePaterno.isEmpty() || apeMaterno.isEmpty() || direccion.isEmpty()
+                || telefono.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "¡Atención! Llena todas las cajas del formulario.");
+            return; // Freno 1
+        }
+        // --- FILTRO DOCUMENTO: Validar DNI (8) o CE (9) ---
+        // Convertimos lo que escribió el usuario a mayúsculas para evitar errores (ej. "ce" -> "CE")
+        String tipoDocFiltro = tipoDoc.toUpperCase();
 
+        if (tipoDocFiltro.equals("DNI")) {
+            if (documento.length() != 8) {
+                JOptionPane.showMessageDialog(null, "Error: El DNI debe tener exactamente 8 dígitos.");
+                return; // Freno
+            }
+        } else if (tipoDocFiltro.equals("CE")) {
+            if (documento.length() != 9) {
+                JOptionPane.showMessageDialog(null, "Error: El Carné de Extranjería (CE) debe tener 9 dígitos.");
+                return; // Freno
+            }
+        } else {
+            // Si el usuario escribe "Pasaporte" u otra cosa que tu sistema aún no acepta
+            JOptionPane.showMessageDialog(null, "Error: Tipo de documento no válido. Use 'DNI' o 'CE'.");
+            return; // Freno
+        }
+
+        // 3. FILTRO TELÉFONO A: Exactamente 9 dígitos
+        if (telefono.length() != 9) {
+            JOptionPane.showMessageDialog(null, "Error: El teléfono debe tener exactamente 9 números.");
+            return; // Freno 2
+        }
+
+        // 4. FILTRO TELÉFONO B: Solo números (sin letras ni símbolos)
+        try {
+            Long.parseLong(telefono);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Error: El teléfono no puede contener letras.");
+            return; // Freno 3
+        }
+
+        // 5. ¡TODO PERFECTO! Ahora sí inyectamos los datos como una nueva fila en nuestra tabla
+        javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tablaClientes.getModel();
         modelo.addRow(new Object[]{tipoDoc, documento, nombres, apePaterno, apeMaterno, direccion, telefono});
 
-        // 3. Limpiamos las cajas (dejándolas vacías) para el siguiente cliente
+        // 6. Limpiamos las cajas (dejándolas vacías) para el siguiente cliente
+        txtTipoDoc.setText("");
+        txtDocumento.setText("");
+        txtNombres.setText("");
+        txtApePaterno.setText("");
+        txtApeMaterno.setText("");
+        txtDireccion.setText("");
+        txtTelefono.setText("");    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // Vaciamos todas las cajas de texto
         txtTipoDoc.setText("");
         txtDocumento.setText("");
         txtNombres.setText("");
@@ -223,31 +289,66 @@ if ( txtTipoDoc.getText().isEmpty() || txtDocumento.getText().isEmpty() || txtNo
         txtApeMaterno.setText("");
         txtDireccion.setText("");
         txtTelefono.setText("");
-             
 
-       // --- FILTRO 1: Validar que tenga exactamente 9 dígitos ---
-        if (telefono.length() != 9) 
-        {
-            JOptionPane.showMessageDialog(null, "Error: El teléfono debe tener exactamente 9 números.");
-            return; // Botamos al usuario del botón
+// Un toque profesional: Mandamos el cursor de vuelta a la primera caja
+        txtTipoDoc.requestFocus();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // 1. Averiguamos qué fila de la tabla seleccionó el usuario (empiezan a contar desde 0)
+        int filaSeleccionada = tablaClientes.getSelectedRow();
+        // ¿Qué hace?: Le pregunta automáticamente a la tabla en qué fila se hizo clic.
+        // ¿Qué devuelve?: Devuelve el número de la POSICIÓN elegida (no la cantidad).
+        //   -> Como toda lista en programación, la primera posición empieza en 0.
+        //   -> Si el usuario presiona el botón sin seleccionar nada, devuelve -1.
+
+        // 2. Si es mayor o igual a 0, significa que sí seleccionó una fila válida
+        if (filaSeleccionada >= 0) {
+            // Llamamos al modelo de la tabla y borramos esa fila específica
+            javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tablaClientes.getModel();
+            modelo.removeRow(filaSeleccionada);
+        } else {
+            // Si es -1, significa que no seleccionó nada. Le avisamos.
+            JOptionPane.showMessageDialog(null, "Por favor, seleccione un cliente de la tabla para eliminar.");
         }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
-       // --- FILTRO 2: Validar que no tenga letras (La Excepción) ---
-        try {
-            // Usamos Long en vez de int por si el número es muy grande, 
-            // su único propósito es ver si explota al encontrar letras.
-            Long.parseLong(telefono);
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // 1. Averiguamos qué fila quiere editar el usuario
+        int filaSeleccionada = tablaClientes.getSelectedRow();
+
+       // 2. Si seleccionó una fila válida (posición 0, 1, 2, etc.)
+        if (filaSeleccionada >= 0) {
+
+            // Obtenemos el modelo de la tabla
+            javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tablaClientes.getModel();
+
+            // 3. Sobreescribimos celda por celda usando lo que hay en las cajas de texto
+            // setValueAt( El nuevo texto , en qué fila , en qué columna )
+            modelo.setValueAt(txtTipoDoc.getText(), filaSeleccionada, 0); // Columna 0 = Tipo Doc
+            modelo.setValueAt(txtDocumento.getText(), filaSeleccionada, 1); // Columna 1 = Documento
+            modelo.setValueAt(txtNombres.getText(), filaSeleccionada, 2); // Columna 2 = Nombres
+            modelo.setValueAt(txtApePaterno.getText(), filaSeleccionada, 3); // Columna 3 = Apellido Pat
+            modelo.setValueAt(txtApeMaterno.getText(), filaSeleccionada, 4); // Columna 4 = Apellido Mat
+            modelo.setValueAt(txtDireccion.getText(), filaSeleccionada, 5); // Columna 5 = Dirección
+            modelo.setValueAt(txtTelefono.getText(), filaSeleccionada, 6); // Columna 6 = Teléfono
+
+            JOptionPane.showMessageDialog(null, "Cliente actualizado correctamente.");
+
         } 
-        catch (NumberFormatException e)
+        else 
         {
-            JOptionPane.showMessageDialog(null, "Error: El teléfono no puede contener letras ni símbolos.");
-            return; // Botamos al usuario del botón
-        }        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+            // Si la posición es -1, mostramos error
+            JOptionPane.showMessageDialog(null, "Por favor, seleccione un cliente de la tabla para editar.");
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
