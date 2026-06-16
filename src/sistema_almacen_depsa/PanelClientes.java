@@ -266,13 +266,30 @@ public class PanelClientes extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Error: El teléfono no puede contener letras.");
             return; // Freno 3
         }
+        
+        // ==============================================================================
+        // REQ-013: Evitar DNI duplicado
+        // ¿Qué hace?: Recorre la tabla visual. Si encuentra que el DNI que el usuario
+        //             escribió ya existe en la columna 1, frena todo el proceso.
+        // ==============================================================================
+        javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tablaClientes.getModel();
+        
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            String docExistente = modelo.getValueAt(i, 1).toString();
+            
+            if (docExistente.equals(documento)) {
+                JOptionPane.showMessageDialog(null, "Error: El DNI/CE " + documento + " ya está registrado en el sistema.");
+                GestorArchivos.registrarLog("ERROR DUPLICADO", "Intento de registro doble con DNI: " + documento);
+                return; // Freno 4: Cancela el guardado
+            }
+        }
 
         // 5. ¡TODO PERFECTO! Ahora sí inyectamos los datos como una nueva fila en nuestra tabla
-        javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tablaClientes.getModel();
+        
         modelo.addRow(new Object[]{tipoDoc, documento, nombres, apePaterno, apeMaterno, direccion, telefono});
 
         // ==============================================================================  
-     // REQ-011:ALMACENAMIENTO DE DATOS (Gestor 1)
+     // REQ-GA-01:ALMACENAMIENTO DE DATOS (Gestor 1)
         // Le enviamos nuestra tabla visual (tablaClientes) al Gestor de Archivos. 
         // Su trabajo es recorrer toda la tabla y guardar la información actualizada 
         // en el bloc de notas ('clientes.txt') para no perder los datos al cerrar el sistema.
@@ -280,15 +297,14 @@ public class PanelClientes extends javax.swing.JPanel {
         GestorArchivos.guardarClientes(tablaClientes);
         
         // ==============================================================================  
-     // REQ-012: cargarClientes() - RECUPERACIÓN DE DATOS (Gestor 2)
+     // REQ-GA-02: cargarClientes() - RECUPERACIÓN DE DATOS (Gestor 2)
        // Apenas se dibuja la ventana, mandamos a leer el bloc de notas 
        // para rellenar la tabla y que el usuario vea sus datos anteriores.
        // ==============================================================================
       
-    // INTEGRACIÓN REQ-013: Registro de hsitorial ( GESTOR 3)
+    // INTEGRACIÓN REQ-GA-03: Registro de hsitorial ( GESTOR 3)
       // ¿Qué hace?: Llama a la herramienta del Log para anotar de forma oculta en el 
       //             bloc de notas que este vendedor logró guardar un cliente.
-      //
       // ¿Por qué usamos la variable 'documento' en vez de 'txtDocumento.getText()'?
       // Porque 'documento' toma el dato seguro que ya está guardado en la memoria de la 
       // computadora, evitando el riesgo de leer la caja visual por si esta se borra o 

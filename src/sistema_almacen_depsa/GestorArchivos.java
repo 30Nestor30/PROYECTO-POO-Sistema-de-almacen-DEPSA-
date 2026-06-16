@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter;
  {
 
     // ==============================================================================
-    // REQ-011: guardarClientes() - ALMACENAMIENTO DE DATOS (Gestor 1)
+    // REQ-GA-01: guardarClientes() - ALMACENAMIENTO DE DATOS (Gestor 1)
     // ¿Qué hace?: Toma los datos de la tabla visual de clientes y, al presionar el botón guardar, 
     //             los guarda en un bloc de notas que se crea una sola vez llamado 'clientes.txt'. 
     //             Ahí se almacenarán todos los clientes ingresados.
@@ -59,7 +59,7 @@ import java.time.format.DateTimeFormatter;
     
     
     // ==============================================================================
-  // REQ-012: cargarClientes() - RECUPERACIÓN DE DATOS (Gestor 2)
+  // REQ-GA-02: cargarClientes() - RECUPERACIÓN DE DATOS (Gestor 2)
     // ¿Qué hace?: Abre el block 'clientes.txt'donde estan guardado a los clientes y al iniciar el sistema, lee la información 
     //             y la inyecta automáticamente en la tabla visual del panel de clientes.
     // ==============================================================================
@@ -97,7 +97,7 @@ import java.time.format.DateTimeFormatter;
     
     
     // ==============================================================================
-    // REQ-013: registrarLog() - EL HISTORIAL DEL SISTEMA (gestor 3)
+    // REQ-GA-03: registrarLog() - EL HISTORIAL DEL SISTEMA (gestor 3)
     // ¿Qué gestor es este?: Es el Gestor 3. Su único trabajo es registrar el historial 
     //                       de auditoría de todo lo que pasa en el sistema.
     // ¿Para qué sirve?: Para tener pruebas (una caja negra). Escribe en 'depsa_log.txt' 
