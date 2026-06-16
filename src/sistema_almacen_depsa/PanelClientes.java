@@ -272,7 +272,7 @@ public class PanelClientes extends javax.swing.JPanel {
         modelo.addRow(new Object[]{tipoDoc, documento, nombres, apePaterno, apeMaterno, direccion, telefono});
 
       // ==============================================================================
-      // INTEGRACIÓN REQ-013: Registro de éxito en la bitácora
+    // INTEGRACIÓN REQ-013: Registro de hsitorial ( GESTOR 3)
       // ¿Qué hace?: Llama a la herramienta del Log para anotar de forma oculta en el 
       //             bloc de notas que este vendedor logró guardar un cliente.
       //
@@ -282,6 +282,14 @@ public class PanelClientes extends javax.swing.JPanel {
       // se queda vacía durante el proceso.
       // ==============================================================================
         GestorArchivos.registrarLog("REGISTRO", "Se guardó el cliente con DNI: " + documento);
+        
+      // ==============================================================================  
+     // REQ-011:ALMACENAMIENTO DE DATOS (Gestor 1)
+        // Le enviamos nuestra tabla visual (tablaClientes) al Gestor de Archivos. 
+        // Su trabajo es recorrer toda la tabla y guardar la información actualizada 
+        // en el bloc de notas ('clientes.txt') para no perder los datos al cerrar el sistema.
+        // ==============================================================================
+        GestorArchivos.guardarClientes(tablaClientes);
         
         // 6. Limpiamos las cajas (dejándolas vacías) para el siguiente cliente
         txtTipoDoc.setText("");
