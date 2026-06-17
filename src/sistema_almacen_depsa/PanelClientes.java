@@ -16,11 +16,17 @@ public class PanelClientes extends javax.swing.JPanel {
      * Creates new form PanelClientes
      */
     public PanelClientes() {
+        // 1. DIBUJO DE LA INTERFAZ
+        // Esta línea es nativa de NetBeans. Se encarga de dibujar tus botones y cajas en la pantalla.
         initComponents();
-        // === CONFIGURACIÓN DE LA TABLA CLIENTES ===
-        // === CONFIGURACIÓN DE LA TABLA CLIENTES ===
+        
+        // ==============================================================================
+        // 2. CONFIGURACIÓN DEL "MOLDE" DE LA TABLA VISUAL
+        // ==============================================================================
+        // Creamos un modelo vacío que funcionará como el esqueleto de nuestra tabla
         javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel();
 
+        // Agregamos las columnas exactas en el orden que necesitamos mostrarlas
         modelo.addColumn("Tipo de Documento");
         modelo.addColumn("N° Documento");
         modelo.addColumn("Nombre(s)");
@@ -29,7 +35,15 @@ public class PanelClientes extends javax.swing.JPanel {
         modelo.addColumn("Dirección");
         modelo.addColumn("Teléfono");
 
+        // Le inyectamos este esqueleto ya configurado a tu tabla visual de NetBeans
         tablaClientes.setModel(modelo);
+        
+        // ==============================================================================
+        // 3. RECUPERACIÓN DE DATOS (LA LECTURA DE LA PIZARRA)
+        // ==============================================================================
+        // ¡El toque mágico! Apenas la tabla termina de dibujarse vacía (en la línea de arriba), 
+        // mandamos a nuestro gestor a leer el archivo .txt para que inyecte todas las filas guardadas.
+        GestorArchivos.cargarClientes(tablaClientes);
     }
 
     /**
@@ -373,6 +387,8 @@ public class PanelClientes extends javax.swing.JPanel {
         
         // 2. Mandamos el cursor parpadeante de vuelta a la primera caja para escribir rápido
         txtTipoDoc.requestFocus();
+        // Mensaje de éxito visual para el usuario
+        javax.swing.JOptionPane.showMessageDialog(this, "¡Cliente registrado exitosamente!");
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed

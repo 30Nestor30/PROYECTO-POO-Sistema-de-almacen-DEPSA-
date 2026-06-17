@@ -20,8 +20,8 @@ public class Producto
     public Producto(String codigo, String nombre, double precio, int stock, String categoria) 
     {
         this.codigo = codigo;
-        this.nombre = nombre;
-        // Llamamos a los Setters para que los datos pasen por el filtro obligatoriamente.
+        // Cambiamos el "this.nombre" directo por el Setter para activar el escudo
+        setNombre(nombre); 
         setPrecio(precio);
         setStock(stock);
         this.categoria = categoria;
@@ -43,8 +43,13 @@ public class Producto
         return nombre;
     }
 
+    // FILTRO DE SEGURIDAD PARA EL NOMBRE (REQ-002)
     public void setNombre(String nombre) 
     {
+        if (nombre == null || nombre.trim().isEmpty()) 
+        {
+            throw new IllegalArgumentException("ERROR: El nombre del producto es obligatorio.");
+        }
         this.nombre = nombre;
     }
 

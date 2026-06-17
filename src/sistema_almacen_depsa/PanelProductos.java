@@ -30,6 +30,8 @@ public class PanelProductos extends javax.swing.JPanel {
 
         // 3. Le ponemos este molde ya listo a nuestra tabla visual
         tablaProductos.setModel(modelo);
+        // Leemos el bloc de notas y dibujamos la tabla al iniciar la pantalla
+        GestorArchivos.cargarProductos(tablaProductos);
     }
 
     /**
@@ -166,34 +168,42 @@ public class PanelProductos extends javax.swing.JPanel {
     }//GEN-LAST:event_txtCodigoActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-// === NIVEL 1 DE SEGURIDAD (EL PORTERO VISUAL) ===
+// ==============================================================================
+        // NIVEL 1 DE SEGURIDAD (EL PORTERO VISUAL)
+        // ==============================================================================
         // Verificamos con un IF que el usuario no haya dejado ninguna cajita en blanco
         if (txtCodigo.getText().isEmpty() || txtNombre.getText().isEmpty()
-                || txtPrecio.getText().isEmpty() || txtStock.getText().isEmpty()
-                || txtCategoria.getText().isEmpty()) {
-            // Si hay algo vacio, sacamos una alerta en pantalla y detenemos todo con el "return"
+                || txtPrecio.getText().isEmpty() || txtStock.getText().isEmpty() || txtCategoria.getText().isEmpty())
+        {
+            // Si hay algo vacío, sacamos una alerta en pantalla y detenemos todo con el "return"
             javax.swing.JOptionPane.showMessageDialog(this, "Por favor, llene todos los campos antes de guardar.", "Error de Validación", javax.swing.JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-// === INICIO DEL PROCESO DE GUARDADO ===
+        // ==============================================================================
+        // INICIO DEL PROCESO DE GUARDADO
+        // ==============================================================================
         try {
-            // 1. Capturamos los textos que escribio el usuario en las cajitas
+            // --- PASO 1: CAPTURA DE DATOS ---
+            // Extraemos el texto exacto que el usuario escribió en la interfaz
             String codigo = txtCodigo.getText();
             String nombre = txtNombre.getText();
             String categoria = txtCategoria.getText();
 
-            // Convertimos los textos de Precio y Stock a verdaderos numeros (Double e Integer)
+            // Convertimos los textos de Precio y Stock a verdaderos números (Double e Integer)
             double precio = Double.parseDouble(txtPrecio.getText());
             int stock = Integer.parseInt(txtStock.getText());
 
-            // 2. Creamos el objeto Producto (¡Aqui entra a trabajar tu clase Producto y su blindaje!)
+            // --- PASO 2: CREACIÓN Y FILTRO (EL ESCUDO INTERNO) ---
+            // Enviamos los datos a la clase Producto. Aquí se activan las validaciones (REQ-002, 003, 004).
+            // Si el precio o stock son negativos, el código se interrumpe aquí y salta directo al 'catch'.
             Producto nuevoProducto = new Producto(codigo, nombre, precio, stock, categoria);
 
-            // 3. Conectamos con el modelo de la tabla para agregar una nueva fila
+            // --- PASO 3: INYECCIÓN EN LA TABLA VISUAL ---
+            // Conectamos con el 'molde' de la tabla para poder agregarle filas
             javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tablaProductos.getModel();
 
-            // Inyectamos los datos del objeto a la fila de la tabla
+            // Usamos los Getters del objeto blindado para insertar la fila en las columnas correctas
             modelo.addRow(new Object[]{
                 nuevoProducto.getCodigo(),
                 nuevoProducto.getNombre(),
@@ -202,24 +212,39 @@ public class PanelProductos extends javax.swing.JPanel {
                 nuevoProducto.getCategoria()
             });
 
-            // 4. Limpiamos las cajitas de texto para que queden vacias para el siguiente producto
+            // --- PASO 4: PERSISTENCIA EN EL DISCO DURO (LA PIZARRA Y EL DIARIO) ---
+            // NUEVO: Borramos el archivo .txt viejo y guardamos la tabla entera actualizada (REQ-001)
+            GestorArchivos.guardarProductos(tablaProductos);
+
+            // NUEVO: Guardamos el registro de esta acción en la caja negra sin borrar lo anterior
+            GestorArchivos.registrarLog("REGISTRO PRODUCTO", "Se registró el producto: " + nombre);
+
+            // --- PASO 5: LIMPIEZA DE INTERFAZ ---
+            // Vaciamos las cajitas de texto dejándolas listas para el siguiente ingreso
             txtCodigo.setText("");
             txtNombre.setText("");
             txtPrecio.setText("");
             txtStock.setText("");
             txtCategoria.setText("");
 
-            // Mensaje de exito
+            // Mostramos el mensaje final de éxito al usuario
             javax.swing.JOptionPane.showMessageDialog(this, "¡Producto registrado en el inventario exitosamente!");
 
-        } // === NIVEL 2 DE SEGURIDAD (EL ESCUDO INTERNO) ===
-        catch (NumberFormatException e) {
-            // Si el usuario escribe letras en el precio (ej. "veinte"), Java lanza esta bomba automatica
-            javax.swing.JOptionPane.showMessageDialog(this, "Error: El Precio y el Stock deben ser numeros validos.", "Dato Incorrecto", javax.swing.JOptionPane.ERROR_MESSAGE);
-        } catch (IllegalArgumentException e) {
-            // Si el usuario pone "-5" en el precio, salta la bomba personalizada que creamos en tu clase Producto
+        } // ==============================================================================
+        // NIVEL 2 DE SEGURIDAD (ATRAPA-ERRORES)
+        // ==============================================================================
+        catch (NumberFormatException e) 
+        {
+            // Salta si el usuario intentó romper el sistema escribiendo letras en vez de números (ej. "veinte")
+            javax.swing.JOptionPane.showMessageDialog(this, "Error: El Precio y el Stock deben ser números válidos.", "Dato Incorrecto", javax.swing.JOptionPane.ERROR_MESSAGE);
+
+        } 
+        catch (IllegalArgumentException e) 
+        {
+            // Salta si la clase Producto detectó una regla de negocio rota (ej. precio negativo)
+            // e.getMessage() imprime exactamente el texto del error que programaste en tu clase Producto
             javax.swing.JOptionPane.showMessageDialog(this, e.getMessage(), "Alerta de Seguridad", javax.swing.JOptionPane.ERROR_MESSAGE);
-        }        // TODO add your handling code here:
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
 

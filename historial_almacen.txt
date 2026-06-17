@@ -1,0 +1,11 @@
+[16/06/2026 22:12:32] REGISTRO PRODUCTO - Se registró el producto: manzana
+[16/06/2026 22:13:05] REGISTRO PRODUCTO - Se registró el producto: svsvs
+[16/06/2026 22:13:28] SISTEMA - Se actualizó el archivo clientes.txt
+[16/06/2026 22:13:28] REGISTRO - Se guardó el cliente con DNI: 74988880
+[16/06/2026 22:27:41] ERROR DUPLICADO - Intento de registro doble con DNI: 74988880
+[16/06/2026 22:28:06] REGISTRO PRODUCTO - Se registró el producto: wwce
+[16/06/2026 22:28:36] ERROR DUPLICADO - Intento de registro doble con DNI: 74988880
+[16/06/2026 22:28:41] SISTEMA - Se actualizó el archivo clientes.txt
+[16/06/2026 22:28:41] REGISTRO - Se guardó el cliente con DNI: 74988881
+[16/06/2026 22:29:15] SISTEMA - Se actualizó el archivo clientes.txt
+[16/06/2026 22:29:15] REGISTRO - Se guardó el cliente con DNI: 78457845

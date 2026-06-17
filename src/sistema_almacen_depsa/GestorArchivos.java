@@ -26,7 +26,9 @@ import java.time.format.DateTimeFormatter;
     public static void guardarClientes(javax.swing.JTable tabla) {
 
         // No usamos 'true' aquí porque queremos que reescriba toda la tabla actualizada
-        try (java.io.FileWriter fw = new java.io.FileWriter("clientes.txt"); java.io.BufferedWriter bw = new java.io.BufferedWriter(fw)) {
+        try (java.io.FileWriter fw = new FileWriter("registro_clientes.txt");
+                java.io.BufferedWriter bw = new java.io.BufferedWriter(fw))
+        {
 
             javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tabla.getModel();
 
@@ -67,7 +69,7 @@ import java.time.format.DateTimeFormatter;
     {
         
         // Usamos BufferedReader para leer el texto línea por línea de forma rápida
-        try (java.io.FileReader fr = new java.io.FileReader("clientes.txt");
+       try (java.io.FileReader fr = new java.io.FileReader("registro_clientes.txt");
              java.io.BufferedReader br = new java.io.BufferedReader(fr)) {
             
             javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tabla.getModel();
@@ -84,12 +86,16 @@ import java.time.format.DateTimeFormatter;
                 modelo.addRow(datosCliente);
             }
             
-        } catch (java.io.FileNotFoundException e) {
+        } 
+       catch (java.io.FileNotFoundException e)
+       {
             // Si da este error es porque el programa es nuevo y aún no se guardó nadie.
             // No hacemos nada, es normal la primera vez.
             System.out.println("El archivo no existe aún. Se creará al guardar por primera vez.");
             
-        } catch (java.io.IOException e) {
+        } 
+       catch (java.io.IOException e) 
+       {
             System.out.println("Error de lectura: " + e.getMessage());
             registrarLog("ERROR", "No se pudo leer clientes.txt: " + e.getMessage());
         }
@@ -109,7 +115,9 @@ import java.time.format.DateTimeFormatter;
     {
 
         // El modo 'true' activa el APPEND (no borra lo anterior)
-        try (FileWriter fw = new FileWriter("depsa_log.txt", true); BufferedWriter bw = new BufferedWriter(fw)) {
+       try (FileWriter fw = new FileWriter("historial_almacen.txt", true);
+                BufferedWriter bw = new BufferedWriter(fw))
+        {
 
             // Obtenemos la fecha y hora exacta del sistema
             LocalDateTime ahora = LocalDateTime.now();
@@ -120,8 +128,68 @@ import java.time.format.DateTimeFormatter;
             bw.write("[" + fechaHora + "] " + operacion + " - " + detalle);
             bw.newLine(); // Salto de línea para el siguiente registro
 
-        } catch (IOException e) {
+        } 
+        catch (IOException e) 
+        {
             System.out.println("Error al escribir en el log: " + e.getMessage());
+        }
+    }
+    
+    // ==============================================================================
+    // REQ-001: guardarProductos() - PERSISTENCIA DE DATOS
+    // ¿Qué hace?: Lee todas las filas de la tabla visual de productos y las escribe 
+    //             una por una en el bloc de notas 'registro_productos.txt' separadas
+    //             por el símbolo '|'. Esto asegura que los datos no se borren.
+    // ==============================================================================
+    public static void guardarProductos(javax.swing.JTable tabla)
+    {
+        try (java.io.FileWriter fw = new java.io.FileWriter("registro_productos.txt");
+             java.io.BufferedWriter bw = new java.io.BufferedWriter(fw)) 
+        {
+            
+            javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tabla.getModel();
+            for (int i = 0; i < modelo.getRowCount(); i++) {
+                String codigo = modelo.getValueAt(i, 0).toString();
+                String nombre = modelo.getValueAt(i, 1).toString();
+                String precio = modelo.getValueAt(i, 2).toString();
+                String stock = modelo.getValueAt(i, 3).toString();
+                String categoria = modelo.getValueAt(i, 4).toString();
+                
+                bw.write(codigo + "|" + nombre + "|" + precio + "|" + stock + "|" + categoria);
+                bw.newLine();
+            }
+        } 
+        catch (Exception e) 
+        {
+            System.out.println("Error al guardar productos: " + e.getMessage());
+        }
+    }
+
+    
+    
+    // ==============================================================================
+    // REQ-001: cargarProductos() - RECUPERACIÓN DE DATOS
+    // ¿Qué hace?: Abre el bloc 'registro_productos.txt' y lee la información línea 
+    //             por línea al iniciar el sistema, inyectándola automáticamente en 
+    //             la tabla visual del panel de productos.
+    // ==============================================================================
+    public static void cargarProductos(javax.swing.JTable tabla) 
+    {
+        try (java.io.FileReader fr = new java.io.FileReader("registro_productos.txt");
+             java.io.BufferedReader br = new java.io.BufferedReader(fr))
+        {
+            
+            javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tabla.getModel();
+            String linea;
+            while ((linea = br.readLine()) != null) 
+            {
+                String[] datos = linea.split("\\|"); 
+                modelo.addRow(datos);
+            }
+        } 
+        catch (Exception e)
+        {
+            // Si el archivo no existe aún (primer uso), no hacemos nada
         }
     }
 }
