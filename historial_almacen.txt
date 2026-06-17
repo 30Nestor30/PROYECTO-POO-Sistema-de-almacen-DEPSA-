@@ -9,3 +9,21 @@
 [16/06/2026 22:28:41] REGISTRO - Se guardó el cliente con DNI: 74988881
 [16/06/2026 22:29:15] SISTEMA - Se actualizó el archivo clientes.txt
 [16/06/2026 22:29:15] REGISTRO - Se guardó el cliente con DNI: 78457845
+[16/06/2026 22:45:01] SISTEMA - Se actualizó el archivo clientes.txt
+[16/06/2026 22:45:01] ELIMINACIÓN - Se eliminó al cliente con DNI: 74988881
+[16/06/2026 22:49:55] SISTEMA - Se actualizó el archivo clientes.txt
+[16/06/2026 22:49:55] ELIMINACIÓN - Se eliminó al cliente con DNI: 74988880
+[16/06/2026 22:55:57] SISTEMA - Se actualizó el archivo clientes.txt
+[16/06/2026 22:55:57] ACTUALIZACIÓN - Se editaron los datos del cliente con DNI/CE: 78457845
+[16/06/2026 23:38:09] SISTEMA - Se actualizó el archivo clientes.txt
+[16/06/2026 23:38:09] REGISTRO - Se guardó el cliente con DNI: 89456122
+[16/06/2026 23:38:53] SISTEMA - Se actualizó el archivo clientes.txt
+[16/06/2026 23:38:53] ACTUALIZACIÓN - Se editó el cliente con DNI/CE: 78457845
+[17/06/2026 02:10:03] SISTEMA - Se actualizó el archivo clientes.txt
+[17/06/2026 02:10:03] ACTUALIZACIÓN - Se editó el cliente con DNI/CE: 78457845
+[17/06/2026 02:19:44] SISTEMA - Se actualizó el archivo clientes.txt
+[17/06/2026 02:19:44] REGISTRO - Se guardó el cliente con DNI: 78945612
+[17/06/2026 02:19:51] SISTEMA - Se actualizó el archivo clientes.txt
+[17/06/2026 02:19:51] ACTUALIZACIÓN - Se editó el cliente con DNI/CE: 78457845
+[17/06/2026 02:20:23] SISTEMA - Se actualizó el archivo clientes.txt
+[17/06/2026 02:20:23] ELIMINACIÓN - Se eliminó al cliente con DNI: 89456122

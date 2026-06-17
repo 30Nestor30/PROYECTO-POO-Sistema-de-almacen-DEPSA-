@@ -38,11 +38,12 @@ public class PanelClientes extends javax.swing.JPanel {
         // Le inyectamos este esqueleto ya configurado a tu tabla visual de NetBeans
         tablaClientes.setModel(modelo);
         
+        //3. ==============================================================================  
+        // REQ-GA-02: cargarClientes() - RECUPERACIÓN DE DATOS (Gestor 2)
+        // ¿Qué hace?: Apenas se dibuja la ventana, mandamos a leer el bloc de notas 
+        //             ('clientes.txt') utilizando el separador '|' para rellenar la tabla 
+        //             y que el usuario vea sus datos anteriores sin que inicie vacía.
         // ==============================================================================
-        // 3. RECUPERACIÓN DE DATOS (LA LECTURA DE LA PIZARRA)
-        // ==============================================================================
-        // ¡El toque mágico! Apenas la tabla termina de dibujarse vacía (en la línea de arriba), 
-        // mandamos a nuestro gestor a leer el archivo .txt para que inyecte todas las filas guardadas.
         GestorArchivos.cargarClientes(tablaClientes);
     }
 
@@ -124,6 +125,11 @@ public class PanelClientes extends javax.swing.JPanel {
                 "Tipo de Documento", "Numero de Documento", "Nombre(s)", "Apellido Paterno", "Apellido Materno", "Dirección", "Telefono"
             }
         ));
+        tablaClientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaClientesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tablaClientes);
 
         jButton2.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
@@ -251,7 +257,7 @@ public class PanelClientes extends javax.swing.JPanel {
                     .addComponent(jButton1)
                     .addComponent(jButton2)
                     .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(51, 51, 51))
@@ -276,32 +282,33 @@ public class PanelClientes extends javax.swing.JPanel {
         if (tipoDoc.isEmpty() || documento.isEmpty() || nombres.isEmpty()
                 || apePaterno.isEmpty() || apeMaterno.isEmpty() || direccion.isEmpty()
                 || telefono.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "¡Atención! Llena todas las cajas del formulario.");
+            javax.swing.JOptionPane.showMessageDialog(null, "¡Atención! Llena todas las cajas del formulario.");
             return; // Freno 1
         }
+        
         // --- FILTRO DOCUMENTO: Validar DNI (8) o CE (9) ---
         // Convertimos lo que escribió el usuario a mayúsculas para evitar errores (ej. "ce" -> "CE")
-        String tipoDocFiltro = tipoDoc.toUpperCase();
+       String tipoDocFiltro = tipoDoc.trim().toUpperCase();
 
         if (tipoDocFiltro.equals("DNI")) {
             if (documento.length() != 8) {
-                JOptionPane.showMessageDialog(null, "Error: El DNI debe tener exactamente 8 dígitos.");
+                javax.swing.JOptionPane.showMessageDialog(null, "Error: El DNI debe tener exactamente 8 dígitos.");
                 return; // Freno
             }
         } else if (tipoDocFiltro.equals("CE")) {
             if (documento.length() != 9) {
-                JOptionPane.showMessageDialog(null, "Error: El Carné de Extranjería (CE) debe tener 9 dígitos.");
+                javax.swing.JOptionPane.showMessageDialog(null, "Error: El Carné de Extranjería (CE) debe tener 9 dígitos.");
                 return; // Freno
             }
         } else {
             // Si el usuario escribe "Pasaporte" u otra cosa que tu sistema aún no acepta
-            JOptionPane.showMessageDialog(null, "Error: Tipo de documento no válido. Use 'DNI' o 'CE'.");
+            javax.swing.JOptionPane.showMessageDialog(null, "Error: Tipo de documento no válido. Use 'DNI' o 'CE'.");
             return; // Freno
         }
 
         // 3. FILTRO TELÉFONO A: Exactamente 9 dígitos
         if (telefono.length() != 9) {
-            JOptionPane.showMessageDialog(null, "Error: El teléfono debe tener exactamente 9 números.");
+            javax.swing.JOptionPane.showMessageDialog(null, "Error: El teléfono debe tener exactamente 9 números.");
             return; // Freno 2
         }
 
@@ -309,10 +316,10 @@ public class PanelClientes extends javax.swing.JPanel {
         try {
             Long.parseLong(telefono);
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Error: El teléfono no puede contener letras.");
+            javax.swing.JOptionPane.showMessageDialog(null, "Error: El teléfono no puede contener letras.");
             return; // Freno 3
         }
-        
+
         // ==============================================================================
         // REQ-013: Evitar DNI duplicado
         // ¿Qué hace?: Recorre la tabla visual. Si encuentra que el DNI que el usuario
@@ -320,48 +327,69 @@ public class PanelClientes extends javax.swing.JPanel {
         // ==============================================================================
         javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tablaClientes.getModel();
         
+        // NUEVO: Verificamos si hay una fila seleccionada (para saber si estamos editando)
+        int filaSeleccionada = tablaClientes.getSelectedRow(); 
+
         for (int i = 0; i < modelo.getRowCount(); i++)
         {
             String docExistente = modelo.getValueAt(i, 1).toString();
             
-            if (docExistente.equals(documento)) 
+            // NUEVO: Agregamos "&& i != filaSeleccionada" para que no bloquee si estamos editando al mismo cliente
+            if (docExistente.equals(documento) && i != filaSeleccionada) 
             {
-                JOptionPane.showMessageDialog(null, "Error: El DNI/CE " + documento + " ya está registrado en el sistema.");
+                javax.swing.JOptionPane.showMessageDialog(null, "Error: El DNI/CE " + documento + " ya está registrado en el sistema.");
                 GestorArchivos.registrarLog("ERROR DUPLICADO", "Intento de registro doble con DNI: " + documento);
                 return; // Freno 4: Cancela el guardado
             }
         }
 
-        // 5. ¡TODO PERFECTO! Ahora sí inyectamos los datos como una nueva fila en nuestra tabla
-        
-        modelo.addRow(new Object[]{tipoDoc, documento, nombres, apePaterno, apeMaterno, direccion, telefono});
+        // 5. DECISIÓN: ¿ACTUALIZAR O CREAR NUEVO?
+        if (filaSeleccionada >= 0) {
+            // --- MODO ACTUALIZAR ---
+            // Sobreescribimos la fila seleccionada con los nuevos datos de las cajas
+            modelo.setValueAt(tipoDoc, filaSeleccionada, 0);
+            modelo.setValueAt(documento, filaSeleccionada, 1);
+            modelo.setValueAt(nombres, filaSeleccionada, 2);
+            modelo.setValueAt(apePaterno, filaSeleccionada, 3);
+            modelo.setValueAt(apeMaterno, filaSeleccionada, 4);
+            modelo.setValueAt(direccion, filaSeleccionada, 5);
+            modelo.setValueAt(telefono, filaSeleccionada, 6);
+
+            tablaClientes.clearSelection(); // Quitamos selección para terminar el modo edición
+            javax.swing.JOptionPane.showMessageDialog(null, "¡Cliente actualizado correctamente!");
+        }
+        else
+        {
+            // --- MODO NUEVO ---
+            // ¡TODO PERFECTO! Ahora sí inyectamos los datos como una nueva fila en nuestra tabla
+            modelo.addRow(new Object[]{tipoDoc, documento, nombres, apePaterno, apeMaterno, direccion, telefono});
+            javax.swing.JOptionPane.showMessageDialog(null, "¡Cliente registrado exitosamente!");
+        }
 
         // ==============================================================================  
-     // REQ-GA-01:ALMACENAMIENTO DE DATOS (Gestor 1)
+        // REQ-GA-01:ALMACENAMIENTO DE DATOS (Gestor 1)
         // Le enviamos nuestra tabla visual (tablaClientes) al Gestor de Archivos. 
         // Su trabajo es recorrer toda la tabla y guardar la información actualizada 
         // en el bloc de notas ('clientes.txt') para no perder los datos al cerrar el sistema.
         // ==============================================================================
         GestorArchivos.guardarClientes(tablaClientes);
-        
-        // ==============================================================================  
-     // REQ-GA-02: cargarClientes() - RECUPERACIÓN DE DATOS (Gestor 2)
-       // Apenas se dibuja la ventana, mandamos a leer el bloc de notas 
-       // para rellenar la tabla y que el usuario vea sus datos anteriores.
-       // ==============================================================================
-      
-    // INTEGRACIÓN REQ-GA-03: Registro de hsitorial ( GESTOR 3)
-      // ¿Qué hace?: Llama a la herramienta del Log para anotar de forma oculta en el 
-      //             bloc de notas que este vendedor logró guardar un cliente.
-      // ¿Por qué usamos la variable 'documento' en vez de 'txtDocumento.getText()'?
-      // Porque 'documento' toma el dato seguro que ya está guardado en la memoria de la 
-      // computadora, evitando el riesgo de leer la caja visual por si esta se borra o 
-      // se queda vacía durante el proceso.
-      // ==============================================================================
-        GestorArchivos.registrarLog("REGISTRO", "Se guardó el cliente con DNI: " + documento);
-        
-     
-        
+
+        // ==============================================================================
+        // INTEGRACIÓN REQ-GA-03: Registro de hsitorial ( GESTOR 3)
+        // ¿Qué hace?: Llama a la herramienta del Log para anotar de forma oculta en el 
+        //             bloc de notas que este vendedor logró guardar un cliente.
+        // ¿Por qué usamos la variable 'documento' en vez de 'txtDocumento.getText()'?
+        // Porque 'documento' toma el dato seguro que ya está guardado en la memoria de la 
+        // computadora, evitando el riesgo de leer la caja visual por si esta se borra o 
+        // se queda vacía durante el proceso.
+        // ==============================================================================
+        // NUEVO: Registra el mensaje correcto dependiendo de si editamos o guardamos uno nuevo
+        if (filaSeleccionada >= 0) {
+            GestorArchivos.registrarLog("ACTUALIZACIÓN", "Se editó el cliente con DNI/CE: " + documento);
+        } else {
+            GestorArchivos.registrarLog("REGISTRO", "Se guardó el cliente con DNI: " + documento);
+        }
+
         // 6. Limpiamos las cajas (dejándolas vacías) para el siguiente cliente
         txtTipoDoc.setText("");
         txtDocumento.setText("");
@@ -372,7 +400,7 @@ public class PanelClientes extends javax.swing.JPanel {
         txtTelefono.setText("");    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-       // Vaciamos todas las cajas de texto
+      // Vaciamos todas las cajas de texto
         txtTipoDoc.setText("");
         txtDocumento.setText("");
         txtNombres.setText("");
@@ -387,8 +415,6 @@ public class PanelClientes extends javax.swing.JPanel {
         
         // 2. Mandamos el cursor parpadeante de vuelta a la primera caja para escribir rápido
         txtTipoDoc.requestFocus();
-        // Mensaje de éxito visual para el usuario
-        javax.swing.JOptionPane.showMessageDialog(this, "¡Cliente registrado exitosamente!");
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -440,76 +466,30 @@ public class PanelClientes extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // 1. Averiguamos qué fila quiere editar el usuario
-        int filaSeleccionada = tablaClientes.getSelectedRow();
+  // ==============================================================================
+    // 1. VERIFICAR SELECCIÓN
+    // ==============================================================================
+    // Averiguamos qué fila seleccionó el usuario
+    int filaSeleccionada = tablaClientes.getSelectedRow();
 
-        // 2. Si seleccionó una fila válida (posición 0, 1, 2, etc.)
-        if (filaSeleccionada >= 0) {
-            
-            // --- INICIO DE VALIDACIONES (Frenos de seguridad) ---
-            String tipoDoc = txtTipoDoc.getText();
-            String documento = txtDocumento.getText();
-            String nombres = txtNombres.getText();
-            String apePaterno = txtApePaterno.getText();
-            String apeMaterno = txtApeMaterno.getText();
-            String direccion = txtDireccion.getText();
-            String telefono = txtTelefono.getText();
+    // Si es -1, significa que le dio al botón sin seleccionar nada en la tabla
+    if (filaSeleccionada == -1) {
+        // Lanzamos el error que pediste y detenemos el código
+        javax.swing.JOptionPane.showMessageDialog(this, "Por favor, seleccione un cliente de la tabla para editar.", "Aviso", javax.swing.JOptionPane.WARNING_MESSAGE);
+        return; 
+    }
 
-            // Freno 1: Ningún campo vacío
-            if (tipoDoc.isEmpty() || documento.isEmpty() || nombres.isEmpty()
-                    || apePaterno.isEmpty() || apeMaterno.isEmpty() || direccion.isEmpty()|| telefono.isEmpty())
-            {
-                JOptionPane.showMessageDialog(null, "Error: Ningún campo puede quedar vacío al actualizar.");
-                return; 
-            }
-
-            // Freno 2: Teléfono válido (9 números exactos)
-            if (telefono.length() != 9) {
-                JOptionPane.showMessageDialog(null, "Error: El teléfono debe tener exactamente 9 números.");
-                return; 
-            }
-            try 
-            {
-                Long.parseLong(telefono);
-            }
-            catch (NumberFormatException e)
-            {
-                JOptionPane.showMessageDialog(null, "Error: El teléfono no puede contener letras.");
-                return; 
-            }
-            // --- FIN DE VALIDACIONES ---
-
-            // Obtenemos el modelo de la tabla
-            javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tablaClientes.getModel();
-
-            // 3. Sobreescribimos celda por celda usando las variables que ya validamos
-            // setValueAt( El nuevo texto , en qué fila , en qué columna )
-            modelo.setValueAt(tipoDoc, filaSeleccionada, 0); 
-            modelo.setValueAt(documento, filaSeleccionada, 1); 
-            modelo.setValueAt(nombres, filaSeleccionada, 2); 
-            modelo.setValueAt(apePaterno, filaSeleccionada, 3); 
-            modelo.setValueAt(apeMaterno, filaSeleccionada, 4); 
-            modelo.setValueAt(direccion, filaSeleccionada, 5); 
-            modelo.setValueAt(telefono, filaSeleccionada, 6); 
-
-            // ==============================================================================
-            // REQ-GA: INTEGRACIÓN CON GESTORES DE ARCHIVOS
-            // Actualizamos el bloc de notas con los datos editados y anotamos en el log.
-            // ==============================================================================
-            GestorArchivos.guardarClientes(tablaClientes);
-            GestorArchivos.registrarLog("ACTUALIZACIÓN", "Se editaron los datos del cliente con DNI/CE: " + documento);
-
-            JOptionPane.showMessageDialog(null, "Cliente actualizado correctamente.");
-
-        } 
-        else 
-        {
-            // Si la posición es -1, mostramos error
-            JOptionPane.showMessageDialog(null, "Por favor, seleccione un cliente de la tabla para editar.");
-        }
-        // ¿Qué hace JOptionPane?: Llama a una ventana emergente (pop-up) visual.
-        // ¿Para qué sirve aquí?: Para lanzarle un cuadro de alerta en medio de la pantalla al usuario si comete un error 
-        //(como no seleccionar a nadie)
+    // ==============================================================================
+    // 2. VIAJE DE DATOS (Preparar la edición)
+    // ==============================================================================
+    // Si pasó el filtro, tomamos los datos de esa fila y los subimos a las cajitas
+    txtTipoDoc.setText(tablaClientes.getValueAt(filaSeleccionada, 0).toString());
+    txtDocumento.setText(tablaClientes.getValueAt(filaSeleccionada, 1).toString());
+    txtNombres.setText(tablaClientes.getValueAt(filaSeleccionada, 2).toString());
+    txtApePaterno.setText(tablaClientes.getValueAt(filaSeleccionada, 3).toString());
+    txtApeMaterno.setText(tablaClientes.getValueAt(filaSeleccionada, 4).toString());
+    txtDireccion.setText(tablaClientes.getValueAt(filaSeleccionada, 5).toString());
+    txtTelefono.setText(tablaClientes.getValueAt(filaSeleccionada, 6).toString());
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarActionPerformed
@@ -637,6 +617,10 @@ public class PanelClientes extends javax.swing.JPanel {
             javax.swing.JOptionPane.showMessageDialog(this, "Error al exportar: " + e.getMessage());
         }
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void tablaClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaClientesMouseClicked
+     
+    }//GEN-LAST:event_tablaClientesMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
