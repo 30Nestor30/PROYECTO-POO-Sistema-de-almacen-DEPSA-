@@ -27,3 +27,10 @@
 [17/06/2026 02:19:51] ACTUALIZACIÓN - Se editó el cliente con DNI/CE: 78457845
 [17/06/2026 02:20:23] SISTEMA - Se actualizó el archivo clientes.txt
 [17/06/2026 02:20:23] ELIMINACIÓN - Se eliminó al cliente con DNI: 89456122
+[17/06/2026 02:33:02] REGISTRO PRODUCTO - Se registró el producto: vsv
+[17/06/2026 02:47:50] REGISTRO PRODUCTO - Se registró el producto: wfw
+[17/06/2026 13:06:35] REGISTRO PRODUCTO - Se registró el producto: manzana
+[17/06/2026 13:06:53] REGISTRO PRODUCTO - Se registró el producto: svsvs
+[17/06/2026 13:20:00] ACTUALIZACIÓN PRODUCTO - Se actualizó el producto: svsvs
+[17/06/2026 13:20:17] ACTUALIZACIÓN PRODUCTO - Se actualizó el producto: manzana
+[17/06/2026 13:20:55] ACTUALIZACIÓN PRODUCTO - Se actualizó el producto: svsvs

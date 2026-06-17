@@ -57,6 +57,7 @@ public class PanelProductos extends javax.swing.JPanel {
         txtCategoria = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaProductos = new javax.swing.JTable();
+        btnEditar = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(204, 204, 204));
         setForeground(new java.awt.Color(204, 204, 204));
@@ -97,6 +98,9 @@ public class PanelProductos extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(tablaProductos);
 
+        btnEditar.setText("EDITAR");
+        btnEditar.addActionListener(this::btnEditarActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -105,29 +109,33 @@ public class PanelProductos extends javax.swing.JPanel {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1375, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addGap(128, 128, 128))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel5))
-                                .addGap(64, 64, 64)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(txtStock, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtCodigo, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtPrecio, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtCategoria, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(61, 61, 61)))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel3)
+                                            .addComponent(jLabel2)
+                                            .addComponent(jLabel4)
+                                            .addComponent(jLabel5))
+                                        .addGap(64, 64, 64)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(txtStock, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtCodigo, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtPrecio, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtCategoria, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(61, 61, 61))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(222, 222, 222)
+                        .addComponent(btnEditar)
+                        .addGap(385, 385, 385)
+                        .addComponent(jButton1)))
                 .addGap(443, 443, 443))
         );
         layout.setVerticalGroup(
@@ -155,9 +163,11 @@ public class PanelProductos extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(txtCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(57, 57, 57)
-                .addComponent(jButton1)
-                .addGap(18, 18, 18)
+                .addGap(45, 45, 45)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(btnEditar))
+                .addGap(30, 30, 30)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -181,9 +191,10 @@ public class PanelProductos extends javax.swing.JPanel {
         }
 
         // ==============================================================================
-        // INICIO DEL PROCESO DE GUARDADO
+        // INICIO DEL PROCESO DE GUARDADO O ACTUALIZACIÓN
         // ==============================================================================
-        try {
+        try 
+        {
             // --- PASO 1: CAPTURA DE DATOS ---
             // Extraemos el texto exacto que el usuario escribió en la interfaz
             String codigo = txtCodigo.getText();
@@ -195,29 +206,53 @@ public class PanelProductos extends javax.swing.JPanel {
             int stock = Integer.parseInt(txtStock.getText());
 
             // --- PASO 2: CREACIÓN Y FILTRO (EL ESCUDO INTERNO) ---
-            // Enviamos los datos a la clase Producto. Aquí se activan las validaciones (REQ-002, 003, 004).
-            // Si el precio o stock son negativos, el código se interrumpe aquí y salta directo al 'catch'.
+            // Enviamos los datos a la clase Producto. Aquí se activan las validaciones (REQ-003, 004).
+            // Si el precio o stock son negativos, el código frena en seco aquí y salta al 'catch'.
             Producto nuevoProducto = new Producto(codigo, nombre, precio, stock, categoria);
 
-            // --- PASO 3: INYECCIÓN EN LA TABLA VISUAL ---
-            // Conectamos con el 'molde' de la tabla para poder agregarle filas
+            // --- PASO 3: LÓGICA INTELIGENTE (¿NUEVO O EDICIÓN?) ---
+            // Conectamos con el 'molde' de la tabla para manipular las filas
             javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tablaProductos.getModel();
+            
+            // NUEVO: Preguntamos si el usuario seleccionó una fila previamente con el botón "Editar"
+            int filaSeleccionada = tablaProductos.getSelectedRow();
 
-            // Usamos los Getters del objeto blindado para insertar la fila en las columnas correctas
-            modelo.addRow(new Object[]{
-                nuevoProducto.getCodigo(),
-                nuevoProducto.getNombre(),
-                nuevoProducto.getPrecio(),
-                nuevoProducto.getStock(),
-                nuevoProducto.getCategoria()
-            });
+            if (filaSeleccionada >= 0)
+            {
+                // ---> MODO ACTUALIZAR <---
+                // Si hay una fila seleccionada, la sobreescribimos usando los datos del objeto blindado.
+                // Así evitamos que el producto se duplique.
+                modelo.setValueAt(nuevoProducto.getCodigo(), filaSeleccionada, 0);
+                modelo.setValueAt(nuevoProducto.getNombre(), filaSeleccionada, 1);
+                modelo.setValueAt(nuevoProducto.getPrecio(), filaSeleccionada, 2);
+                modelo.setValueAt(nuevoProducto.getStock(), filaSeleccionada, 3);
+                modelo.setValueAt(nuevoProducto.getCategoria(), filaSeleccionada, 4);
+
+                tablaProductos.clearSelection(); // Quitamos la marca azul de selección
+                
+                GestorArchivos.registrarLog("ACTUALIZACIÓN PRODUCTO", "Se actualizó el producto: " + nombre);
+                javax.swing.JOptionPane.showMessageDialog(this, "¡Producto actualizado correctamente!");
+                
+            } 
+            else
+            {
+                // ---> MODO NUEVO <---
+                // Si no hay ninguna fila seleccionada, inyectamos una fila nueva al final de la tabla.
+                modelo.addRow(new Object[]{
+                    nuevoProducto.getCodigo(),
+                    nuevoProducto.getNombre(),
+                    nuevoProducto.getPrecio(),
+                    nuevoProducto.getStock(),
+                    nuevoProducto.getCategoria()
+                });
+                
+                GestorArchivos.registrarLog("REGISTRO PRODUCTO", "Se registró el producto: " + nombre);
+                javax.swing.JOptionPane.showMessageDialog(this, "¡Producto registrado en el inventario exitosamente!");
+            }
 
             // --- PASO 4: PERSISTENCIA EN EL DISCO DURO (LA PIZARRA Y EL DIARIO) ---
-            // NUEVO: Borramos el archivo .txt viejo y guardamos la tabla entera actualizada (REQ-001)
+            // Borramos el archivo .txt viejo y guardamos la tabla entera actualizada (REQ-001)
             GestorArchivos.guardarProductos(tablaProductos);
-
-            // NUEVO: Guardamos el registro de esta acción en la caja negra sin borrar lo anterior
-            GestorArchivos.registrarLog("REGISTRO PRODUCTO", "Se registró el producto: " + nombre);
 
             // --- PASO 5: LIMPIEZA DE INTERFAZ ---
             // Vaciamos las cajitas de texto dejándolas listas para el siguiente ingreso
@@ -227,17 +262,14 @@ public class PanelProductos extends javax.swing.JPanel {
             txtStock.setText("");
             txtCategoria.setText("");
 
-            // Mostramos el mensaje final de éxito al usuario
-            javax.swing.JOptionPane.showMessageDialog(this, "¡Producto registrado en el inventario exitosamente!");
-
-        } // ==============================================================================
+        } 
+        // ==============================================================================
         // NIVEL 2 DE SEGURIDAD (ATRAPA-ERRORES)
         // ==============================================================================
         catch (NumberFormatException e) 
         {
             // Salta si el usuario intentó romper el sistema escribiendo letras en vez de números (ej. "veinte")
             javax.swing.JOptionPane.showMessageDialog(this, "Error: El Precio y el Stock deben ser números válidos.", "Dato Incorrecto", javax.swing.JOptionPane.ERROR_MESSAGE);
-
         } 
         catch (IllegalArgumentException e) 
         {
@@ -247,8 +279,36 @@ public class PanelProductos extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        // ==============================================================================
+        // REQ-004 (Parte 1): PREPARACIÓN PARA ACTUALIZAR (Efecto Editar)
+        // ¿Qué hace?: Verifica que se haya seleccionado un producto y sube sus datos 
+        //             a las cajas de texto para poder modificar el stock (u otro dato).
+        // ==============================================================================
+        
+        // 1. Averiguamos qué fila seleccionó el usuario en la tabla visual
+        int filaSeleccionada = tablaProductos.getSelectedRow();
+
+        // 2. Si el resultado es -1, significa que no hizo clic en ninguna fila
+        if (filaSeleccionada == -1) {
+            // Le mostramos un mensaje de alerta y detenemos el proceso con el 'return'
+            javax.swing.JOptionPane.showMessageDialog(this, "Por favor, seleccione un producto de la tabla para editar.", 
+                    "Aviso", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return; 
+        }
+
+        // 3. VIAJE DE DATOS: Extraemos el texto de cada columna de la fila seleccionada
+        //    y lo enviamos a sus respectivas cajitas blancas.
+        txtCodigo.setText(tablaProductos.getValueAt(filaSeleccionada, 0).toString());
+        txtNombre.setText(tablaProductos.getValueAt(filaSeleccionada, 1).toString());
+        txtPrecio.setText(tablaProductos.getValueAt(filaSeleccionada, 2).toString());
+        txtStock.setText(tablaProductos.getValueAt(filaSeleccionada, 3).toString());
+        txtCategoria.setText(tablaProductos.getValueAt(filaSeleccionada, 4).toString());
+    }//GEN-LAST:event_btnEditarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnEditar;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
