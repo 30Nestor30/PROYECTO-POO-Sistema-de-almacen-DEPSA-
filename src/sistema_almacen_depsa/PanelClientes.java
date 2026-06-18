@@ -253,11 +253,12 @@ public class PanelClientes extends javax.swing.JPanel {
                     .addComponent(jLabel8)
                     .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton1)
+                        .addComponent(jButton2)
+                        .addComponent(jButton3)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(51, 51, 51))
@@ -284,6 +285,14 @@ public class PanelClientes extends javax.swing.JPanel {
                 || telefono.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(null, "¡Atención! Llena todas las cajas del formulario.");
             return; // Freno 1
+        }
+        
+        // ==============================================================================
+        // CORRECCIÓN PROFESOR: Validar que el Documento solo contenga números
+        // ==============================================================================
+        if (!documento.matches("[0-9]+")) {
+            javax.swing.JOptionPane.showMessageDialog(null, "Error: El documento solo puede contener números, sin letras ni caracteres especiales.");
+            return; // Freno
         }
         
         // --- FILTRO DOCUMENTO: Validar DNI (8) o CE (9) ---

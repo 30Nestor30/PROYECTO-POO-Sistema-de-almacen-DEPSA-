@@ -1,2 +1,4 @@
-dni|78457845|bbbb|scsw|wfwr|rvevsdc|754698732
-dni|78945612|cacadvd|acaa|vsv|svsv|123654985
+DNI|45698714|Juan|Cardenas|Peralta|AV.LOS HEROES #245|987456321
+CE |123456789|fredy|padilla|rodriguez|av. la paz|654987123
+ce|467803584|pedro|gutierrez|martinez|jr trujillo|456987321
+dni|749888a4|aca|acac|acac|acaca|124567893
