@@ -10,20 +10,24 @@ package sistema_almacen_depsa;
  */
 public class Producto 
 {
-     private String codigo;
+    private String codigo;
     private String nombre;
+    private String marca;
     private double precio;
     private int stock;
     private String categoria;
 
     // Constructor
-    public Producto(String codigo, String nombre, double precio, int stock, String categoria) 
+    public Producto(String codigo, String nombre, String marca , double precio, int stock, String categoria) 
     {
         this.codigo = codigo;
-        // Cambiamos el "this.nombre" directo por el Setter para activar el escudo
+        
+        // Usamos los Setters para activar tus escudos de seguridad
         setNombre(nombre); 
-        setPrecio(precio);
-        setStock(stock);
+        this.marca = marca;
+        setPrecio(precio); // Escudo REQ-003
+        setStock(stock);   // Escudo REQ-004
+        
         this.categoria = categoria;
     }
 
@@ -52,7 +56,19 @@ public class Producto
         }
         this.nombre = nombre;
     }
+    
+    public String getMarca()
+    {
+        return marca;
+    }
+    
+    // Y su Setter
+    public void setMarca(String marca)
+    {
+        this.marca = marca;
+    }
 
+    
     public double getPrecio() 
     {
         return precio;

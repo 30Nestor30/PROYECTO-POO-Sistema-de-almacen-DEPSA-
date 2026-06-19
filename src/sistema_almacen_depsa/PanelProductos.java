@@ -21,16 +21,21 @@ public class PanelProductos extends javax.swing.JPanel {
         // 1. Creamos el "molde" de la tabla
         javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel();
 
-        // 2. Agregamos las columnas exactas que necesitamos
+        // 2. Agregamos las columnas exactas que necesitamos en orden
         modelo.addColumn("Código");
         modelo.addColumn("Nombre");
+        
+        // NUEVO: Le ordenamos al molde que dibuje la columna Marca en la posición 2
+        modelo.addColumn("Marca"); 
+        
         modelo.addColumn("Precio");
         modelo.addColumn("Stock");
         modelo.addColumn("Categoría");
 
         // 3. Le ponemos este molde ya listo a nuestra tabla visual
         tablaProductos.setModel(modelo);
-        // Leemos el bloc de notas y dibujamos la tabla al iniciar la pantalla
+        
+        // 4. Leemos el bloc de notas y dibujamos la tabla al iniciar la pantalla
         GestorArchivos.cargarProductos(tablaProductos);
     }
 
@@ -58,6 +63,8 @@ public class PanelProductos extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaProductos = new javax.swing.JTable();
         btnEditar = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        txtMarca = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(204, 204, 204));
         setForeground(new java.awt.Color(204, 204, 204));
@@ -87,13 +94,13 @@ public class PanelProductos extends javax.swing.JPanel {
 
         tablaProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Código", "Nombre", "Marca", "Precio", "Stock", "Categoria"
             }
         ));
         jScrollPane1.setViewportView(tablaProductos);
@@ -101,56 +108,68 @@ public class PanelProductos extends javax.swing.JPanel {
         btnEditar.setText("EDITAR");
         btnEditar.addActionListener(this::btnEditarActionPerformed);
 
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel7.setText("Marca:");
+
+        txtMarca.addActionListener(this::txtMarcaActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnEditar)
+                                .addGap(287, 287, 287)
+                                .addComponent(jButton1)
+                                .addGap(528, 528, 528))
+                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jLabel3)
-                                            .addComponent(jLabel2)
-                                            .addComponent(jLabel4)
-                                            .addComponent(jLabel5))
-                                        .addGap(64, 64, 64)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(txtStock, javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtCodigo, javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtPrecio, javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtCategoria, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGap(61, 61, 61))))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel6)
+                                        .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
+                                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addGap(24, 24, 24)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtStock, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
+                                    .addComponent(txtPrecio, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
+                                    .addComponent(txtCategoria, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
+                                    .addComponent(txtCodigo)
+                                    .addComponent(txtNombre)
+                                    .addComponent(txtMarca))
+                                .addGap(522, 522, 522))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(444, 444, 444))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(222, 222, 222)
-                        .addComponent(btnEditar)
-                        .addGap(385, 385, 385)
-                        .addComponent(jButton1)))
-                .addGap(443, 443, 443))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(38, 38, 38)
+                .addGap(24, 24, 24)
                 .addComponent(jLabel1)
-                .addGap(28, 28, 28)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
+                    .addComponent(jLabel2)
+                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(24, 24, 24)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(txtMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -163,13 +182,13 @@ public class PanelProductos extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(txtCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(45, 45, 45)
+                .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(btnEditar))
-                .addGap(30, 30, 30)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(43, 43, 43)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -178,12 +197,13 @@ public class PanelProductos extends javax.swing.JPanel {
     }//GEN-LAST:event_txtCodigoActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-// ==============================================================================
+        // ==============================================================================
         // NIVEL 1 DE SEGURIDAD (EL PORTERO VISUAL)
         // ==============================================================================
         // Verificamos con un IF que el usuario no haya dejado ninguna cajita en blanco
         if (txtCodigo.getText().isEmpty() || txtNombre.getText().isEmpty()
-                || txtPrecio.getText().isEmpty() || txtStock.getText().isEmpty() || txtCategoria.getText().isEmpty())
+                || txtMarca.getText().isEmpty() || txtPrecio.getText().isEmpty() // NUEVO: Validamos que la cajita de Marca no esté vacía (Movido aquí)
+                || txtStock.getText().isEmpty() || txtCategoria.getText().isEmpty()) 
         {
             // Si hay algo vacío, sacamos una alerta en pantalla y detenemos todo con el "return"
             javax.swing.JOptionPane.showMessageDialog(this, "Por favor, llene todos los campos antes de guardar.", "Error de Validación", javax.swing.JOptionPane.WARNING_MESSAGE);
@@ -199,6 +219,7 @@ public class PanelProductos extends javax.swing.JPanel {
             // Extraemos el texto exacto que el usuario escribió en la interfaz
             String codigo = txtCodigo.getText();
             String nombre = txtNombre.getText();
+            String marca = txtMarca.getText(); // NUEVO: Extraemos el texto de la marca (Movido después del nombre)
             String categoria = txtCategoria.getText();
 
             // Convertimos los textos de Precio y Stock a verdaderos números (Double e Integer)
@@ -208,7 +229,8 @@ public class PanelProductos extends javax.swing.JPanel {
             // --- PASO 2: CREACIÓN Y FILTRO (EL ESCUDO INTERNO) ---
             // Enviamos los datos a la clase Producto. Aquí se activan las validaciones (REQ-003, 004).
             // Si el precio o stock son negativos, el código frena en seco aquí y salta al 'catch'.
-            Producto nuevoProducto = new Producto(codigo, nombre, precio, stock, categoria);
+            // NUEVO: Pasamos la marca en su nueva posición
+            Producto nuevoProducto = new Producto(codigo, nombre, marca, precio, stock, categoria);
 
             // --- PASO 3: LÓGICA INTELIGENTE (¿NUEVO O EDICIÓN?) ---
             // Conectamos con el 'molde' de la tabla para manipular las filas
@@ -224,9 +246,10 @@ public class PanelProductos extends javax.swing.JPanel {
                 // Así evitamos que el producto se duplique.
                 modelo.setValueAt(nuevoProducto.getCodigo(), filaSeleccionada, 0);
                 modelo.setValueAt(nuevoProducto.getNombre(), filaSeleccionada, 1);
-                modelo.setValueAt(nuevoProducto.getPrecio(), filaSeleccionada, 2);
-                modelo.setValueAt(nuevoProducto.getStock(), filaSeleccionada, 3);
-                modelo.setValueAt(nuevoProducto.getCategoria(), filaSeleccionada, 4);
+                modelo.setValueAt(nuevoProducto.getMarca(), filaSeleccionada, 2); // NUEVO: Actualizamos la marca en la columna 2
+                modelo.setValueAt(nuevoProducto.getPrecio(), filaSeleccionada, 3);
+                modelo.setValueAt(nuevoProducto.getStock(), filaSeleccionada, 4);
+                modelo.setValueAt(nuevoProducto.getCategoria(), filaSeleccionada, 5);
 
                 tablaProductos.clearSelection(); // Quitamos la marca azul de selección
                 
@@ -241,6 +264,7 @@ public class PanelProductos extends javax.swing.JPanel {
                 modelo.addRow(new Object[]{
                     nuevoProducto.getCodigo(),
                     nuevoProducto.getNombre(),
+                    nuevoProducto.getMarca(), // NUEVO: Inyectamos la marca en la columna 2
                     nuevoProducto.getPrecio(),
                     nuevoProducto.getStock(),
                     nuevoProducto.getCategoria()
@@ -258,6 +282,7 @@ public class PanelProductos extends javax.swing.JPanel {
             // Vaciamos las cajitas de texto dejándolas listas para el siguiente ingreso
             txtCodigo.setText("");
             txtNombre.setText("");
+            txtMarca.setText(""); // NUEVO: Dejamos la cajita de la marca en blanco (Movido aquí)
             txtPrecio.setText("");
             txtStock.setText("");
             txtCategoria.setText("");
@@ -301,10 +326,15 @@ public class PanelProductos extends javax.swing.JPanel {
         //    y lo enviamos a sus respectivas cajitas blancas.
         txtCodigo.setText(tablaProductos.getValueAt(filaSeleccionada, 0).toString());
         txtNombre.setText(tablaProductos.getValueAt(filaSeleccionada, 1).toString());
-        txtPrecio.setText(tablaProductos.getValueAt(filaSeleccionada, 2).toString());
-        txtStock.setText(tablaProductos.getValueAt(filaSeleccionada, 3).toString());
-        txtCategoria.setText(tablaProductos.getValueAt(filaSeleccionada, 4).toString());
+        txtMarca.setText(tablaProductos.getValueAt(filaSeleccionada, 2).toString());
+        txtPrecio.setText(tablaProductos.getValueAt(filaSeleccionada, 3).toString());
+        txtStock.setText(tablaProductos.getValueAt(filaSeleccionada, 4).toString());
+        txtCategoria.setText(tablaProductos.getValueAt(filaSeleccionada, 5).toString());
     }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void txtMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMarcaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMarcaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -316,10 +346,12 @@ public class PanelProductos extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaProductos;
     private javax.swing.JTextField txtCategoria;
     private javax.swing.JTextField txtCodigo;
+    private javax.swing.JTextField txtMarca;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtPrecio;
     private javax.swing.JTextField txtStock;

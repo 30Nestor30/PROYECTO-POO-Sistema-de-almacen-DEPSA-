@@ -17,3 +17,8 @@
 [18/06/2026 00:12:18] REGISTRO - Se guardó el cliente con DNI: 749888a4
 [18/06/2026 01:27:57] SISTEMA - Se actualizó el archivo clientes.txt
 [18/06/2026 01:27:57] ACTUALIZACIÓN - Se editó el cliente con DNI/CE: 45698714
+[18/06/2026 03:18:13] REGISTRO PRODUCTO - Se registró el producto: sdfdb
+[18/06/2026 03:19:27] REGISTRO PRODUCTO - Se registró el producto: svvs
+[18/06/2026 13:46:10] REGISTRO PRODUCTO - Se registró el producto: svsv
+[18/06/2026 13:57:06] REGISTRO PRODUCTO - Se registró el producto: scs
+[18/06/2026 13:57:17] ACTUALIZACIÓN PRODUCTO - Se actualizó el producto: scs
